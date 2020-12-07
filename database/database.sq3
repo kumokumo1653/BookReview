@@ -1,0 +1,29 @@
+create table accounts(
+    id char(20) primary key,
+    salt varchar(40),
+    hashed varchar(40),
+    algo char(5),
+    date varchar(64)
+);
+
+create table books(
+    id char(20) primary key,
+    title varchar(100) not null,
+    author varchar(100),
+    page integer,
+    publishedDate varchar(100),
+    publisher varchar(100),
+    description varchar(100),
+    rating real,
+    ratingnumber integer
+);
+
+create table details(
+    rating integer,
+    comment text,
+    bookid char(20),
+    name char(20),
+    foreign key (bookid) references books(id),
+    foreign key (name) references accounts(id),
+    primary key(bookid, name)
+);
