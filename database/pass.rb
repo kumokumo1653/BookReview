@@ -7,11 +7,13 @@ ActiveRecord::Base.establish_connection :development
 
 class Account < ActiveRecord::Base
 end
-
+class Detail < ActiveRecord::Base
+end
 class Passwd
 
     def initialize
         @r = Random.new
+        
     end
 
     def GenAccount(username, rawpasswd, algorithm)
@@ -75,6 +77,15 @@ class Passwd
         puts "username = #{username}"
         begin
             a = Account.find(username)
+            #該当レビューを消す
+            begin
+                reviews = Detail.where(name:username)
+                reviews.each do |s|
+                    s.destroy
+                end
+            rescue => exception
+                return
+            end
             a.destroy
         rescue => e
             puts "user #{username} is not found."

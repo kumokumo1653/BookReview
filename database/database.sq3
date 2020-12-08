@@ -19,11 +19,11 @@ create table books(
 );
 
 create table details(
-    rating integer,
-    comment text,
+    id char(20) primary key,
+    rating integer not null,
+    comment text not null,
     bookid char(20),
     name char(20),
     foreign key (bookid) references books(id),
-    foreign key (name) references accounts(id),
-    primary key(bookid, name)
+    foreign key (name) references accounts(id)
 );
