@@ -9,11 +9,12 @@ class Account < ActiveRecord::Base
 end
 class Detail < ActiveRecord::Base
 end
+class Book < ActiveRecord::Base
+end
 class Passwd
 
     def initialize
         @r = Random.new
-        
     end
 
     def GenAccount(username, rawpasswd, algorithm)
@@ -80,8 +81,14 @@ class Passwd
             #該当レビューを消す
             begin
                 reviews = Detail.where(name:username)
+                #本のレビューの更新
                 reviews.each do |s|
-                    s.destroy
+                    book = Book.find(s.bookid)
+                    book.rating = (book.rating * book.ratingnumber - s.rating) / (book.ratingnumber - 1)
+                    book.ratingnumber -= 1
+                    book.wannanumber -= s.wannaread
+                    book.recommend -= s.recommend
+                    book.save
                 end
             rescue => exception
                 return

@@ -24,6 +24,10 @@ class Library
             s.publishedDate = publishedDate
             s.publisher = publisher
             s.description = description
+            s.rating = 0.0
+            s.ratingnumber = 0
+            s.wannanumber = 0
+            s.recommendnumber = 0
             s.save
         rescue => exception
             puts "book has already registered"
@@ -51,7 +55,7 @@ class Library
     def Show
         @Lib = Book.all
         @Lib.each do |a|
-            puts a.id + "\t" + a.title + "\t"
+            puts a.id + "\t" + a.title + "\t" + a.rating.to_s + "\t" + a.wannanumber.to_s + "\t" + a.recommendnumber.to_s
         end
     end
 end

@@ -18,7 +18,7 @@ class Reviewer
         @Review = Detail.all
     end
 
-    def Add(bookId, username, rating, comment)
+    def Add(bookId, username, rating, comment, wannaread, recommend)
         s = Detail.new
         book = nil
         user = nil
@@ -41,9 +41,21 @@ class Reviewer
             s.id = book.id + user.id
             s.rating = rating
             s.comment = comment
+            s.wannaread = wannaread
+            s.recommend = recommend
             s.bookid = book.id
             s.name = user.id
             s.save
+            #レビューの更新
+            book.rating = (book.rating * book.ratingnumber + rating) / (book.ratingnumber + 1)
+            book.ratingnumber += 1
+            if wannaread == 1
+                book.wannanumber += 1
+            end
+            if recommend == 1
+                book.recommendnumber += 1
+            end
+            book.save
         rescue => exception
             puts "This review has already added"
             return    
@@ -51,9 +63,58 @@ class Reviewer
 
     end
 
+    def Change(id, rating, comment, wannaread, recommend)
+        begin
+            s = Detail.find(id)
+            #レビューの更新
+            book = Book.find(s.bookid)
+            if(rating == 0)
+                book.rating = (book.rating * book.ratingnumber - s.rating + rating) / (book.ratingnumber - 1)
+                book.ratingnumber -= 1
+            else 
+                book.rating = (book.rating * book.ratingnumber - s.rating + rating) / (book.ratingnumber)
+            end
+
+            if wannaread == 1 && s.wannaread == 0
+                book.wannanumber += 1
+            end
+            if wannaread == 0 && s.wannaread == 1
+                book.wannanumber -= 1
+            end
+            if recommend == 1 && s.recommend == 0
+                book.recommendnumber += 1
+            end
+            if recommend == 0 && s.recommend == 1
+                book.recommendnumber -= 1
+            end
+            book.save
+
+            s.rating = rating
+            s.comment = comment
+            s.wannaread = wannaread
+            s.recommend = recommend
+            s.save
+        rescue => exception
+            puts exception
+            puts "review is not found"
+        end
+    end
+
     def Delete(id)
         begin
             s = Detail.find(id)
+            begin
+                #レビュー更新
+                book = Book.find(s.bookid)
+                book.rating = (book.rating * book.ratingnumber - s.rating) / (book.ratingnumber - 1)
+                book.ratingnumber -= 1
+                book.wannanumber -= s.wannaread
+                book.recommend -= s.recommend
+                book.save
+            rescue => exception
+                puts "this book is not found"                
+                return 
+            end
             s.destroy
         rescue => exception
             puts "review is not found"
