@@ -11,7 +11,7 @@ class Detail < ActiveRecord::Base
 end
 class Book < ActiveRecord::Base
 end
-class Passwd
+class User
 
     def initialize
         @r = Random.new
@@ -47,13 +47,14 @@ class Passwd
             db_date = a.date
         rescue => e
             puts "user #{username} is not found."
+            return false
         end
         #ハッシュアルゴリズムが1であれば
         if db_algo == "1"
             trial_hashed = Digest::MD5.hexdigest(db_salt + passwd)
         else 
             puts "Unkown algorithm is used for user #{username}."
-            return
+            return false
         end
 
         #Success?
@@ -67,9 +68,10 @@ class Passwd
             end
             a.date = Time.now.to_i
             a.save
-            
+            return true, a.date.to_i
         else 
             puts "login failed"
+            return false
         end
 
     end
@@ -84,13 +86,22 @@ class Passwd
                 #本のレビューの更新
                 reviews.each do |s|
                     book = Book.find(s.bookid)
-                    book.rating = (book.rating * book.ratingnumber - s.rating) / (book.ratingnumber - 1)
-                    book.ratingnumber -= 1
+                    if (s.rating != 0)
+                        if (book.ratingnumber == 1)
+                            book.rating = 0
+                            book.ratingnumber = 0
+                        else
+                            book.rating = (book.rating * book.ratingnumber - s.rating) / (book.ratingnumber - 1)
+                            book.ratingnumber -= 1
+                        end
+                    end
                     book.wannanumber -= s.wannaread
-                    book.recommend -= s.recommend
+                    book.recommendnumber -= s.recommend
                     book.save
+                    s.destroy
                 end
             rescue => exception
+                puts exception
                 return
             end
             a.destroy

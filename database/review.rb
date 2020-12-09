@@ -47,8 +47,10 @@ class Reviewer
             s.name = user.id
             s.save
             #レビューの更新
-            book.rating = (book.rating * book.ratingnumber + rating) / (book.ratingnumber + 1)
-            book.ratingnumber += 1
+            if(rating != 0)
+                    book.rating = (book.rating * book.ratingnumber + rating) / (book.ratingnumber + 1)
+                    book.ratingnumber += 1
+            end
             if wannaread == 1
                 book.wannanumber += 1
             end
@@ -69,8 +71,13 @@ class Reviewer
             #レビューの更新
             book = Book.find(s.bookid)
             if(rating == 0)
-                book.rating = (book.rating * book.ratingnumber - s.rating + rating) / (book.ratingnumber - 1)
-                book.ratingnumber -= 1
+                if (book.ratingnumber == 1)
+                    book.rating = 0
+                    book.ratingnumber = 0
+                else
+                    book.rating = (book.rating * book.ratingnumber - s.rating + rating) / (book.ratingnumber - 1)
+                    book.ratingnumber -= 1
+                end
             else 
                 book.rating = (book.rating * book.ratingnumber - s.rating + rating) / (book.ratingnumber)
             end
@@ -106,12 +113,20 @@ class Reviewer
             begin
                 #レビュー更新
                 book = Book.find(s.bookid)
-                book.rating = (book.rating * book.ratingnumber - s.rating) / (book.ratingnumber - 1)
-                book.ratingnumber -= 1
+                if (s.rating != 0)
+                    if (book.ratingnumber == 1)
+                        book.rating = 0
+                        book.ratingnumber = 0
+                    else
+                        book.rating = (book.rating * book.ratingnumber - s.rating) / (book.ratingnumber - 1)
+                        book.ratingnumber -= 1
+                    end
+                end
                 book.wannanumber -= s.wannaread
-                book.recommend -= s.recommend
+                book.recommendnumber -= s.recommend
                 book.save
             rescue => exception
+                puts exception
                 puts "this book is not found"                
                 return 
             end
@@ -124,7 +139,7 @@ class Reviewer
     def Show
         @Review = Detail.all
         @Review.each do |a|
-            puts a.bookid + "\t" + a.comment + "\t"
+            puts a.bookid + "\t" + a.comment + "\t" + a.rating.to_s
         end
     end
 end

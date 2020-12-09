@@ -48,6 +48,7 @@ class Library
             end
             a.destroy
         rescue => exception
+            puts exception
             puts "book #{id} is not found."
         end
     end
