@@ -32,7 +32,9 @@ class User
             s.save
         rescue => e
             puts "That user name is already registered"
+            return false
         end
+        return true
     end
 
     def CheckAccount(username, passwd)

@@ -16,8 +16,13 @@ end
 get '/login' do
     erb :loginscr
 end
+
+get '/registration' do
+    erb :register
+end
+
 post '/auth' do
-    username = params[:uname]
+    user name = params[:uname]
     pass = params[:pass]
     result,date = $user.CheckAccount(username, pass)
 
@@ -31,8 +36,28 @@ post '/auth' do
     end
 end
 
-get '/failure' do 
-    erb :failure
+post '/request' do
+    username = params[:name]
+    pass = params[:pass]
+    algorithm = 1
+    result = $user.GenAccount(username, pass, algorithm)
+    if(result)
+        redirect '/success'
+    else
+        redirect '/registfail'
+    end
+end
+
+get '/success' do
+    erb :success
+end
+
+get '/registfail' do
+    erb :registfail
+end
+
+get '/loginfail' do 
+    erb :loginfail
 end
 
 get '/mypage' do
