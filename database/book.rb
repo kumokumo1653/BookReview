@@ -59,4 +59,12 @@ class Library
             puts a.id + "\t" + a.title + "\t" + a.rating.to_s + "\t" + a.wannanumber.to_s + "\t" + a.recommendnumber.to_s
         end
     end
+
+    def GetBook(id) 
+        begin
+            return Book.find(id)
+        rescue => exception
+            return []
+        end
+    end
 end

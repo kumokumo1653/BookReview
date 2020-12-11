@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8" />
+        <title>ほんろぐ</title>
+        <script type="text/javascript" src="bookdetail.js"></script>
+    </head>
+
+    <body>
+        <center>
+        <h1>マイページ</h1>
+        </center>
+        <table border=1>
+            <tr>
+                <th>タイトル</th>
+                <th>著者</th>
+                <th>ページ数</th>
+                <th>出版日</th>
+                <th>出版社</th>
+                <th>あらすじ</th>
+                <th>評価</th>
+                <th>おすすめ</th>
+                <th>読みたい</th>
+            </tr>
+            <tr>
+                <td id="title"></td>
+                <td id="author"></td>
+                <td id="page"></td>
+                <td id="publishedDate"></td>
+                <td id="publisher"></td>
+                <td id="description"></td>
+                <%if @book == []%>
+                    <td id="rating">-</td>
+                    <td id="recommend">-</td>
+                    <td id="wannaread">-</td>
+                <%else%>
+                    <td id="rating"><%=@book.rating%>% </td>
+                    <td id="recommend"><%=@book.recommendnumber%></td>
+                    <td id="wannaread"><%= @book.wannanumber %></td>
+                <%end%>
+            </tr>
+        </table>
+        <a href="/logout">logout</a>
+    </body>
+</html>

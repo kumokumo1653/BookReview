@@ -3,13 +3,19 @@
     <head>
         <meta charset="utf-8" />
         <title>ほんろぐ</title>
+        <script type="text/javascript" src="contents.js"></script>
     </head>
 
     <body>
         <center>
         <h1>マイページ</h1>
         </center>
-        
+        <form id="tar">
+        BookSearch:<input type="text" id="key" maxlength="50">
+        <input type="button" value="search" onclick="search();">
+        </form>
+
+        <div id="result"></div>
         <a href="/logout">logout</a>
     </body>
 </html>

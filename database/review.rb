@@ -142,4 +142,13 @@ class Reviewer
             puts a.bookid + "\t" + a.comment + "\t" + a.rating.to_s
         end
     end
+
+    def GetReview(bookid)
+        begin
+            return Detail.where(bookid:bookid)
+        rescue => exception
+            return []
+        end
+    end
+
 end

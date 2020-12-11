@@ -9,6 +9,8 @@ set :sessions,
     secret:'abcdefghij0123456789'
 
 $user = User.new
+$lib = Library.new
+$review = Reviewer.new
 get '/' do
     redirect '/login'
 end
@@ -22,7 +24,7 @@ get '/registration' do
 end
 
 post '/auth' do
-    user name = params[:uname]
+    username = params[:uname]
     pass = params[:pass]
     result,date = $user.CheckAccount(username, pass)
 
@@ -60,6 +62,11 @@ get '/loginfail' do
     erb :loginfail
 end
 
+get '/logout' do
+    session.clear
+    erb :logout
+end
+
 get '/mypage' do
     if(session[:login_flag] == true)
         @a = session[:testdata]
@@ -69,7 +76,9 @@ get '/mypage' do
     end
 end
 
-get '/logout' do
-    session.clear
-    erb :logout
+get '/book/:id' do
+    id = params[:id]
+    @reviews = $review.GetReview(id)
+    @book = $lib.GetBook(id)
+    erb :bookdetail
 end
