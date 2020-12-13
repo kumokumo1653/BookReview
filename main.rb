@@ -78,7 +78,14 @@ end
 
 get '/book/:id' do
     id = params[:id]
-    @reviews = $review.GetReview(id)
+    temp = $review.GetReview(id)
+    @reviews = []
+    #コメントありのみを抽出
+    for i in temp
+        if i.comment != ""
+            @reviews.push(i)
+        end
+    end
     @book = $lib.GetBook(id)
     erb :bookdetail
 end
