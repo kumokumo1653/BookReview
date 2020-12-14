@@ -30,7 +30,7 @@ post '/auth' do
 
     if(result)
         session[:login_flag] = true
-        session[:testdata] = date
+        session[:name] = username
         redirect '/mypage'
     else
         session[:login_flag] = false
@@ -69,7 +69,7 @@ end
 
 get '/mypage' do
     if(session[:login_flag] == true)
-        @a = session[:testdata]
+        @a = session[:name]
         erb :contents
     else
         erb :badrequest
@@ -77,15 +77,20 @@ get '/mypage' do
 end
 
 get '/book/:id' do
-    id = params[:id]
-    temp = $review.GetReview(id)
-    @reviews = []
-    #コメントありのみを抽出
-    for i in temp
-        if i.comment != ""
-            @reviews.push(i)
+    if(session[:login_flag] == true)
+        @name = session[:name]
+        id = params[:id]
+        temp = $review.GetReview(id)
+        @reviews = []
+        #コメントありのみを抽出
+        for i in temp
+            if i.comment != ""
+                @reviews.push(i)
+            end
         end
+        @book = $lib.GetBook(id)
+        erb :bookdetail
+    else
+        erb :badrequest
     end
-    @book = $lib.GetBook(id)
-    erb :bookdetail
 end

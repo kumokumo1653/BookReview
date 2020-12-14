@@ -25,7 +25,8 @@ function radioDeselect(obj, num) {
     }
 }
 
-let form = document.getElementById("form");
 function transmission(){
-        
+    //let recommend = form.elements['recommend'];
+    let form = document.getElementById("input");
+    console.log(form.elements['recommend'].checked);
 }

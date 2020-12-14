@@ -2,6 +2,7 @@
     <head>
         <meta charset="utf-8" />
         <title>ほんろぐ</title>
+        <script type="text/javascript"> let name = "<%=@name%>"</script>
         <script type="text/javascript" src="bookdetail.js"></script>
     </head>
 
@@ -40,27 +41,29 @@
             </tr>
         </table>
         
-        <table id="form">
-            <tr>
-                <td><input type="checkbox" name="recommend" value="recommend">おすすめ</td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" name="wanna" value="wanna">読みたい</td>
-            </tr>
-            <tr>
-                <td><input type="radio" value="1" name="rating" onclick="radioDeselect(this, 1)">1</td>
-                <td><input type="radio" value="2" name="rating" onclick="radioDeselect(this, 2)">2</td>
-                <td><input type="radio" value="3" name="rating" onclick="radioDeselect(this, 3)">3</td>
-                <td><input type="radio" value="4" name="rating" onclick="radioDeselect(this, 4)">4</td>
-                <td><input type="radio" value="5" name="rating" onclick="radioDeselect(this, 5)">5</td>
-            </tr>
-            <tr>
-                <td>コメント</td><td><textarea name="comment"></textarea></td>
-            </tr>
-            <tr>
-                <td><button type="button" name="transmission" value="aaa" onclick="transmission()">送信</button></td>
-            </tr>
-        </table>
+        <form id="input">
+            <table>
+                <tr>
+                    <td><input type="checkbox" name="recommend">おすすめ</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" name="wanna">読みたい</td>
+                </tr>
+                <tr>
+                    <td><input type="radio" value="1" name="rating" onclick="radioDeselect(this, 1)">1</td>
+                    <td><input type="radio" value="2" name="rating" onclick="radioDeselect(this, 2)">2</td>
+                    <td><input type="radio" value="3" name="rating" onclick="radioDeselect(this, 3)">3</td>
+                    <td><input type="radio" value="4" name="rating" onclick="radioDeselect(this, 4)">4</td>
+                    <td><input type="radio" value="5" name="rating" onclick="radioDeselect(this, 5)">5</td>
+                </tr>
+                <tr>
+                    <td>コメント</td><td><textarea name="comment"></textarea></td>
+                </tr>
+                <tr>
+                    <td><button type="button" name="send" onclick="transmission()">送信</button></td>
+                </tr>
+            </table>
+        </form>
 
         <%if @reviews.empty? %>
         <p>レビューはありません。</p>
