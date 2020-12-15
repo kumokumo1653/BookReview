@@ -21,6 +21,7 @@ puts ""
 pass.CheckAccount("ieyasu","tanuki")
 puts ""
 
+lib.Delete("0001")
 lib.Register("0001", "ハリーポッタ", "J.Kローリン", 500, "2020-01", "小学館", "あらすじ")
 lib.Show
 puts ""
@@ -43,8 +44,4 @@ review.Change("0001singen", 0, "", 0 , 0)
 review.Show
 lib.Show
 puts ""
-lib.Delete("0001")
-review.Show
-lib.Show
-puts "asdf"
 

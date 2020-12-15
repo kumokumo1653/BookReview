@@ -15,11 +15,24 @@ class Library
     end
 
     def Register(id, title, author, page, publishedDate, publisher, description)
+        temp = ""
+        begin
+            author.each_with_index do |num, index|
+                if(index == author.size - 1)
+                    temp += num
+                else
+                    temp += num + ","
+                end
+            end
+        rescue => exception
+            puts(exception)
+            return
+        end
         begin
             s = Book.new
             s.id = id
             s.title = title
-            s.author = author
+            s.author = temp
             s.page = page
             s.publishedDate = publishedDate
             s.publisher = publisher

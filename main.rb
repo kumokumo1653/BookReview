@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'json'
 require './database/user'
 require './database/book'
 require './database/review'
@@ -50,6 +51,13 @@ post '/request' do
     end
 end
 
+post '/review' , provides: :json do
+    params = JSON.load(request.body.read)
+    book = params[0]
+    review = params[1] 
+    $lib.Register(book[:id], book[:title], book[:author], book[:page], book[:publishedDate], book[:publisher], book[:description])
+    $review.Add(book[:id], review[:username], review[:rating], review[:comment], review[:wanna],review[:recommend])
+end
 get '/success' do
     erb :success
 end
