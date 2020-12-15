@@ -61,6 +61,7 @@ function transmission(){
     request.onload = function() {
         if(request.status == 200){
             console.log("responce");
+            location.reload();
         }
     };
     console.log(param);
