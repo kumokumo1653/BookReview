@@ -2,14 +2,17 @@
     <head>
         <meta charset="utf-8" />
         <title>ほんろぐ</title>
-        <script type="text/javascript"> let username = "<%=@name%>"</script>
+        <script type="text/javascript"> let username = "<%=@name%>" </script>
         <script type="text/javascript" src="bookdetail.js"></script>
     </head>
 
     <body>
         <center>
-        <h1>マイページ</h1>
+        <h1>ほんのページ</h1>
         </center>
+        <left>
+        <a href="/mypage"><h3>マイページ</h3></a>
+        </left>
         <table border=1>
             <tr>
                 <th>タイトル</th>
@@ -34,7 +37,7 @@
                     <td id="recommend">-</td>
                     <td id="wannaread">-</td>
                 <%else%>
-                    <td id="rating"><%=@book.rating%>% </td>
+                    <td id="rating"><%=@book.rating%></td>
                     <td id="recommend"><%=@book.recommendnumber%></td>
                     <td id="wannaread"><%= @book.wannanumber %></td>
                 <%end%>
@@ -42,27 +45,52 @@
         </table>
         
         <form id="input">
-            <table>
-                <tr>
-                    <td><input type="checkbox" name="recommend">おすすめ</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" name="wanna">読みたい</td>
-                </tr>
-                <tr>
-                    <td><input type="radio" value="1" name="rating" onclick="radioDeselect(this, 1)">1</td>
-                    <td><input type="radio" value="2" name="rating" onclick="radioDeselect(this, 2)">2</td>
-                    <td><input type="radio" value="3" name="rating" onclick="radioDeselect(this, 3)">3</td>
-                    <td><input type="radio" value="4" name="rating" onclick="radioDeselect(this, 4)">4</td>
-                    <td><input type="radio" value="5" name="rating" onclick="radioDeselect(this, 5)">5</td>
-                </tr>
-                <tr>
-                    <td>コメント</td><td><textarea name="comment"></textarea></td>
-                </tr>
-                <tr>
-                    <td><button type="button" name="send" onclick="transmission()">送信</button></td>
-                </tr>
-            </table>
+            <%if @writingFlag%>
+                <table>
+                    <tr>
+                        <td><input type="checkbox" name="recommend" <%if @mywriting.recommend == 1%> checked="checked"<%end%>>おすすめ</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="wanna" <%if @mywriting.wannaread == 1%> checked="checked"<%end%>>読みたい</td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" value="1" name="rating" onclick="radioDeselect(this, 1)"<%if @mywriting.rating == 1%> checked="checked"<%end%>>1</td>
+                        <td><input type="radio" value="2" name="rating" onclick="radioDeselect(this, 2)"<%if @mywriting.rating == 2%> checked="checked"<%end%>>2</td>
+                        <td><input type="radio" value="3" name="rating" onclick="radioDeselect(this, 3)"<%if @mywriting.rating == 3%> checked="checked"<%end%>>3</td>
+                        <td><input type="radio" value="4" name="rating" onclick="radioDeselect(this, 4)"<%if @mywriting.rating == 4%> checked="checked"<%end%>>4</td>
+                        <td><input type="radio" value="5" name="rating" onclick="radioDeselect(this, 5)"<%if @mywriting.rating == 5%> checked="checked"<%end%>>5</td>
+                    </tr>
+                    <tr>
+                        <td>コメント</td><td><textarea name="comment"><%= @mywriting.comment%></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><button type="button" name="send" onclick="transmission(this)">更新</button></td>
+                        <td><button type="button" name="send" onclick="transmission(this)">削除</button></td>
+                    </tr>
+                </table>
+            <%else%>
+                <table>
+                    <tr>
+                        <td><input type="checkbox" name="recommend">おすすめ</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="wanna">読みたい</td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" value="1" name="rating" onclick="radioDeselect(this, 1)">1</td>
+                        <td><input type="radio" value="2" name="rating" onclick="radioDeselect(this, 2)">2</td>
+                        <td><input type="radio" value="3" name="rating" onclick="radioDeselect(this, 3)">3</td>
+                        <td><input type="radio" value="4" name="rating" onclick="radioDeselect(this, 4)">4</td>
+                        <td><input type="radio" value="5" name="rating" onclick="radioDeselect(this, 5)">5</td>
+                    </tr>
+                    <tr>
+                        <td>コメント</td><td><textarea name="comment"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><button type="button" name="send" onclick="transmission(this)">送信</button></td>
+                    </tr>
+                </table>
+            <%end%>
         </form>
 
         <%if @reviews.empty? %>

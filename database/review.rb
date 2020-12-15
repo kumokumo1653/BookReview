@@ -27,14 +27,14 @@ class Reviewer
             book = Book.find(bookId)
         rescue => exception
             puts "book is not found"
-            return -1
+            return false
         end
 
         begin
             user = Account.find(username)
         rescue => exception
             puts "user is not found"
-            return -1
+            return false
         end
 
         begin
@@ -60,9 +60,9 @@ class Reviewer
             book.save
         rescue => exception
             puts "This review has already added"
-            return    
+            return false 
         end
-
+        return true
     end
 
     def Change(id, rating, comment, wannaread, recommend)
@@ -102,8 +102,8 @@ class Reviewer
             s.recommend = recommend
             s.save
         rescue => exception
-            puts exception
             puts "review is not found"
+            return false
         end
     end
 

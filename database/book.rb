@@ -26,7 +26,7 @@ class Library
             end
         rescue => exception
             puts(exception)
-            return
+            return false
         end
         begin
             s = Book.new
@@ -44,7 +44,9 @@ class Library
             s.save
         rescue => exception
             puts "book has already registered"
+            return false
         end
+        return true
     end
 
     def Delete(id)
@@ -78,6 +80,15 @@ class Library
             return Book.find(id)
         rescue => exception
             return []
+        end
+    end
+
+    def IsBook(id)
+        a = Book.find_by(id:id)
+        if a == nil
+            return false
+        else
+            return true
         end
     end
 end
