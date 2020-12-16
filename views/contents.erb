@@ -16,6 +16,56 @@
         </form>
 
         <div id="result"></div>
+
+        <h2>読みたいリスト</h2>
+        <%if @wannaBook == []%>
+            <p>まだ読みたい本はありません。</p>
+        <%else%>
+            <table border=1>
+                <tr>
+                    <th>タイトル</th>
+                    <th>著者</th>
+                    <th>出版社</th>
+                    <th>ページ数</th>
+                    <th>発行日</th>
+                    <th>あらすじ</th>
+                </tr>
+                <%for i in @wannaBook%>>
+                    <tr>
+                        <td><a href="http://127.0.0.1:9998/book/<%=i.id%>"> <%= i.title%></a></td>
+                        <td><%= i.author%></td>
+                        <td><%= i.publisher%></td>
+                        <td><%= i.page%></td>
+                        <td><%= i.publishedDate%></td>
+                        <td><%= i.description%></td>
+                    </tr>
+                <%end%>
+            </table>
+        <%end%>
+
+        <%if @recommendBook != []%>
+            <h2>あなたへのおすすめ</h2>
+            <table border=1>
+                <tr>
+                    <th>タイトル</th>
+                    <th>著者</th>
+                    <th>出版社</th>
+                    <th>ページ数</th>
+                    <th>発行日</th>
+                    <th>あらすじ</th>
+                </tr>
+                <%for i in @recommendBook%>>
+                    <tr>
+                        <td><a href="http://127.0.0.1:9998/book/<%=i.id%>"> <%= i.title%></a></td>
+                        <td><%= i.author%></td>
+                        <td><%= i.publisher%></td>
+                        <td><%= i.page%></td>
+                        <td><%= i.publishedDate%></td>
+                        <td><%= i.description%></td>
+                    </tr>
+                <%end%>
+            </table>
+        <%end%>
         <a href="/logout">logout</a>
     </body>
 </html>

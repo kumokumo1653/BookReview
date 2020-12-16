@@ -143,12 +143,21 @@ class Reviewer
         end
     end
 
-    def GetReview(bookid)
+    def GetReviewByBook(bookid)
         begin
             return Detail.where(bookid:bookid)
         rescue => exception
             return []
         end
     end
+
+    def GetReviewByUser(username)
+        begin
+            return Detail.where(name:username)
+        rescue => exception
+            return []
+        end
+    end
+        
 
 end

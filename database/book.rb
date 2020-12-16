@@ -83,6 +83,9 @@ class Library
         end
     end
 
+    def GetBooks
+        return Book.all
+    end
     def IsBook(id)
         a = Book.find_by(id:id)
         if a == nil
@@ -91,4 +94,5 @@ class Library
             return true
         end
     end
+
 end

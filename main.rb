@@ -183,6 +183,24 @@ end
 get '/mypage' do
     if(session[:login_flag] == true)
         @a = session[:name]
+        @wannaBook = []
+        @recommendBook = []
+        temp = $review.GetReviewByUser(@a)
+
+        for i in temp
+            if (i.wannaread == 1)
+                book = $lib.GetBook(i.bookid)
+                if(book != [])
+                    @wannaBook.push(book)
+                end
+            end
+        end
+        temp = $lib.GetBooks
+        for i in temp
+            if (i.recommendnumber >= 1 && i.rating >= 3.0)
+                @recommendBook.push(i)
+            end
+        end
         erb :contents
     else
         erb :badrequest
@@ -194,7 +212,7 @@ get '/book/:id' do
         @writingFlag = false
         @name = session[:name]
         id = params[:id]
-        temp = $review.GetReview(id)
+        temp = $review.GetReviewByBook(id)
         @reviews = []
         #コメントありのみを抽出
         for i in temp
