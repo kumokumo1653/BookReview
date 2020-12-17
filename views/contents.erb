@@ -30,7 +30,7 @@
                     <th>発行日</th>
                     <th>あらすじ</th>
                 </tr>
-                <%for i in @wannaBook%>>
+                <%for i in @wannaBook%>
                     <tr>
                         <td><a href="http://127.0.0.1:9998/book/<%=i.id%>"> <%= i.title%></a></td>
                         <td><%= i.author%></td>
@@ -54,7 +54,7 @@
                     <th>発行日</th>
                     <th>あらすじ</th>
                 </tr>
-                <%for i in @recommendBook%>>
+                <%for i in @recommendBook%>
                     <tr>
                         <td><a href="http://127.0.0.1:9998/book/<%=i.id%>"> <%= i.title%></a></td>
                         <td><%= i.author%></td>

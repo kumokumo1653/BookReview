@@ -1,3 +1,18 @@
+ユーザー制約
+ユーザー名 15文字(英数字記号)
+パスワード 100文字(英数字記号)
+コメント 150文字(改行なし，htmlタグなし)
+
+データベース制約
+book
+超過したら切り捨てる
+id 15文字
+title 30文字
+author 30文字
+publisher 20文字
+publishedDate 15文字
+description 300文字
+
 google book api
 429: 1ユーザーあたり毎分の制約にひっかかる。
 {

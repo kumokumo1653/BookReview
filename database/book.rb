@@ -2,10 +2,24 @@ require 'active_record'
 ActiveRecord::Base.configurations = YAML.load_file('./database/database.yml')
 ActiveRecord::Base.establish_connection :development
 
+ID = 15
+TITLE = 30
+AUTHOR = 30
+PUBLISHER = 20
+PUBLISHEDDATE = 15
+DESCRIPTION = 300
 class Book < ActiveRecord::Base
 end
 
 class Detail < ActiveRecord::Base
+end
+
+def cut(str, max)
+    if(str.length > max)
+        str = str.slice(0,max)
+        str += "..."
+    end
+    return str
 end
 
 class Library
@@ -18,9 +32,20 @@ class Library
         temp = ""
         begin
             author.each_with_index do |num, index|
+                len = 0
                 if(index == author.size - 1)
+                    len += num.length
+                    if(len > AUTHOR)
+                        temp += "他"
+                        break
+                    end
                     temp += num
                 else
+                    len += num.length
+                    if(len > AUTHOR)
+                        temp += "他"
+                        break
+                    end
                     temp += num + ","
                 end
             end
@@ -30,19 +55,20 @@ class Library
         end
         begin
             s = Book.new
-            s.id = id
-            s.title = title
+            s.id = id.slice(0, ID)
+            s.title = cut(title, TITLE)
             s.author = temp
             s.page = page
-            s.publishedDate = publishedDate
-            s.publisher = publisher
-            s.description = description
+            s.publishedDate = cut(publishedDate, PUBLISHEDDATE)
+            s.publisher = cut(publisher, PUBLISHER)
+            s.description = cut(description, DESCRIPTION)
             s.rating = 0.0
             s.ratingnumber = 0
             s.wannanumber = 0
             s.recommendnumber = 0
             s.save
         rescue => exception
+            puts exception
             puts "book has already registered"
             return false
         end

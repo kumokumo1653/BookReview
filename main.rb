@@ -3,6 +3,7 @@ require 'json'
 require './database/user'
 require './database/book'
 require './database/review'
+require 'cgi/escape'
 
 set :environment, :production
 set :sessions,
@@ -24,18 +25,74 @@ get '/registration' do
     erb :register
 end
 
-post '/auth' do
-    username = params[:uname]
-    pass = params[:pass]
-    result,date = $user.CheckAccount(username, pass)
-
-    if(result)
-        session[:login_flag] = true
-        session[:name] = username
-        redirect '/mypage'
-    else
-        session[:login_flag] = false
-        redirect '/loginfail'
+post '/auth' , provides: :json do
+    params = JSON.load(request.body.read) 
+    begin
+        type = params[0]
+        if(type["type"] == "login")
+            info = params[1]
+            if info.empty?
+                status 400
+                return 
+            end
+            info.each{|key,value|
+                if(key == "name" || key == "pass")
+                    if(value.class != String)
+                        status 400
+                        puts "info is wrong"
+                        return
+                    end
+                else
+                    status 400
+                    puts "info is wrong"
+                    return
+                end
+            }
+            #check
+            result = $user.CheckAccount(info["name"], info["pass"])
+            if (result)
+                session[:login_flag] = true
+                session[:name] = info["name"]
+                status 200
+                return 
+            else
+                session[:login_flag] = false
+                status 400
+                return
+            end
+        elsif (type["type"] == "register")
+            info = params[1]
+            if info.empty?
+                status 400
+                return 
+            end
+            info.each{|key,value|
+                if(key == "name" || key == "pass")
+                    if(value.class != String)
+                        status 400
+                        puts "info is wrong"
+                        return
+                    end
+                else
+                    status 400
+                    puts "info is wrong"
+                    return
+                end
+            }
+            #generate
+            result = $user.GenAccount(info["name"], info["pass"],1)
+            if (result)
+                status 200
+                return 
+            else
+                status 400
+                return
+            end
+        end
+    rescue => exception
+        puts exception
+        status 400
+        return 
     end
 end
 
@@ -59,7 +116,17 @@ post '/review' , provides: :json do
         if (type["type"] == "add")
             book = params[1]
             review = params[2] 
+            if book.empty?
+                status 400
+                return 
+            end
+            if review.empty?
+                status 400
+                return 
+            end
             book.each{|key,value|
+                puts key
+                puts value.class
                 if (key == "author")
                     if (value.class != Array)
                         puts "book info is wrong"
@@ -72,12 +139,15 @@ post '/review' , provides: :json do
                         status 400
                         return
                     end
-                else
+                elsif(key == "id" || key == "title" || key == "publishedDate" || key == "publisher" || key == "description")
                     if(value.class != String)
                         puts "book info is wrong"
                         status 400
                         return
                     end
+                else
+                    status 400
+                    return    
                 end
             }
 
@@ -94,12 +164,15 @@ post '/review' , provides: :json do
                         status 400
                         return
                     end
-                else
+                elsif (key == "username" || key == "comment")
                     if(value.class != String)
                         puts "review info is wrong"
                         status 400
                         return
                     end
+                else
+                    status 400
+                    return
                 end
             }
             if !$lib.IsBook(book["id"])
@@ -129,12 +202,15 @@ post '/review' , provides: :json do
                         status 400
                         return
                     end
-                else
+                elsif (key == "id" || key == "comment")
                     if(value.class != String)
                         puts "review info is wrong"
                         status 400
                         return
                     end
+                else
+                    status 400
+                    return
                 end
             }
             wanna = review["wanna"] ? 1 : 0
@@ -155,6 +231,9 @@ post '/review' , provides: :json do
                 status 400
                 return
             end
+        else
+            status 400
+            return
         end
 
         status 200
@@ -211,6 +290,11 @@ get '/book/:id' do
     if(session[:login_flag] == true)
         @writingFlag = false
         @name = session[:name]
+        @book = $lib.GetBook(params[:id])
+        @searchFlag = false
+        if(@book == [])
+            @searchFlag = true
+        end
         id = params[:id]
         temp = $review.GetReviewByBook(id)
         @reviews = []
@@ -220,10 +304,10 @@ get '/book/:id' do
                 @writingFlag = true
                 @mywriting = i
             elsif i.comment != ""
+                i.comment = CGI.escapeHTML(i.comment)
                 @reviews.push(i)
             end
         end
-        @book = $lib.GetBook(id)
         erb :bookdetail
     else
         erb :badrequest

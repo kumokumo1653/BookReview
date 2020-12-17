@@ -5,6 +5,8 @@ require 'time'
 ActiveRecord::Base.configurations = YAML.load_file('./database/database.yml')
 ActiveRecord::Base.establish_connection :development
 
+USERNAME = 15
+PASSWD = 100
 class Account < ActiveRecord::Base
 end
 class Detail < ActiveRecord::Base
@@ -20,8 +22,18 @@ class User
     def GenAccount(username, rawpasswd, algorithm)
         salt = Digest::MD5.hexdigest(@r.bytes(20))
         hashed = Digest::MD5.hexdigest(salt + rawpasswd)
-        puts "username = #{username}"
-        puts "ras passwd = #{rawpasswd}"
+        if(username.length > USERNAME)
+            return false
+        end
+        if(!(username =~ /\A[a-z\d]+\z/i))
+            return false
+        end
+        if(rawpasswd.length > USERNAME)
+            return false
+        end
+        if(!(rawpasswd =~ /\A[a-z\d]+\z/i))
+            return false
+        end
         begin
             s = Account.new
             s.id = username
@@ -70,7 +82,7 @@ class User
             end
             a.date = Time.now.to_i
             a.save
-            return true, a.date.to_i
+            return true
         else 
             puts "login failed"
             return false

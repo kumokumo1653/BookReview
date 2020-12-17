@@ -2,7 +2,10 @@
     <head>
         <meta charset="utf-8" />
         <title>ほんろぐ</title>
-        <script type="text/javascript"> let username = "<%=@name%>" </script>
+        <link rel="stylesheet" type="text/css" href="../popup.css">
+        <script type="text/javascript"> let username = "<%=@name%>" 
+                                        let searchFlag = <%= @searchFlag%>
+        </script>
         <script type="text/javascript" src="bookdetail.js"></script>
     </head>
 
@@ -25,23 +28,47 @@
                 <th>おすすめ</th>
                 <th>読みたい</th>
             </tr>
-            <tr>
-                <td id="title"></td>
-                <td id="author"></td>
-                <td id="page"></td>
-                <td id="publishedDate"></td>
-                <td id="publisher"></td>
-                <td id="description"></td>
-                <%if @book == []%>
-                    <td id="rating">-</td>
-                    <td id="recommend">-</td>
-                    <td id="wannaread">-</td>
-                <%else%>
-                    <td id="rating"><%=@book.rating%></td>
-                    <td id="recommend"><%=@book.recommendnumber%></td>
-                    <td id="wannaread"><%= @book.wannanumber %></td>
-                <%end%>
-            </tr>
+            <%if @searchFlag%>
+                <tr>
+                    <td id="title"></td>
+                    <td id="author"></td>
+                    <td id="page"></td>
+                    <td id="publishedDate"></td>
+                    <td id="publisher"></td>
+                    <td id="description"></td>
+                    <%if @book == []%>
+                        <td id="rating">-</td>
+                        <td id="recommend">-</td>
+                        <td id="wannaread">-</td>
+                    <%else%>
+                        <td id="rating"><%=@book.rating%></td>
+                        <td id="recommend"><%=@book.recommendnumber%></td>
+                        <td id="wannaread"><%= @book.wannanumber %></td>
+                    <%end%>
+                </tr>
+            <%else%>
+                <tr>
+                    <td id="title"><%=@book.title%></td>
+                    <td id="author"><%=@book.author%></td>
+                    <td id="page"><%=@book.page%></td>
+                    <td id="publishedDate"><%=@book.publishedDate%></td>
+                    <td id="publisher"><%=@book.publisher%></td>
+                    <td id="description"><%=@book.description%></td>
+                    <%if @book == []%>
+                        <td id="rating">-</td>
+                        <td id="recommend">-</td>
+                        <td id="wannaread">-</td>
+                    <%else%>
+                        <%if @book.rating == 0%>
+                            <td id="rating">-</td>
+                        <%else%>
+                            <td id="rating"><%=@book.rating%></td>
+                        <%end%>
+                        <td id="recommend"><%=@book.recommendnumber%></td>
+                        <td id="wannaread"><%= @book.wannanumber %></td>
+                    <%end%>
+                </tr>
+            <%end%>
         </table>
         
         <form id="input">
@@ -110,5 +137,24 @@
             </table>
         <%end%>
         <a href="/logout">logout</a>
+
+        <div class="popup" id="limitPop">
+            <div class="popupInner">
+                <p>アクセス回数がGoogleBooksAPIの制限に抵触しました．少し待ってからもう一度お試しください．</p>
+                <button type="button" id="limitButton" onclick="location.href='http://127.0.0.1:9998/mypage'">マイページに戻る</button>
+            </div>
+            <div class="background" id="popupBack"></div>
+        </div>
+        <div class="popup" id="writingPop">
+            <div class="popupInner">
+                <p>書き込み時にエラーが発生しました．次の項目を確認してください．</p>
+                <ul>
+                    <li>書き込みがすでにされていないか</li>
+                    <li>本の情報に欠損はないか</li>
+                </ul>
+                <button type="button" id="writingButton" >閉じる</button>
+            </div>
+            <div class="background" id="popupBack"></div>
+        </div>
     </body>
 </html>

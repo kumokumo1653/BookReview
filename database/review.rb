@@ -2,6 +2,7 @@ require 'active_record'
 ActiveRecord::Base.configurations = YAML.load_file('./database/database.yml')
 ActiveRecord::Base.establish_connection :development
 
+COMMENT = 150
 class Book < ActiveRecord::Base
 end
 
@@ -38,9 +39,10 @@ class Reviewer
         end
 
         begin
+            comment =comment.gsub(/[\r\n|\r|\n|\t|\s] 　/,"")
             s.id = book.id + user.id
             s.rating = rating
-            s.comment = comment
+            s.comment = comment.slice(0, COMMENT)
             s.wannaread = wannaread
             s.recommend = recommend
             s.bookid = book.id
@@ -75,11 +77,20 @@ class Reviewer
                     book.rating = 0
                     book.ratingnumber = 0
                 else
-                    book.rating = (book.rating * book.ratingnumber - s.rating + rating) / (book.ratingnumber - 1)
+                    book.rating = (book.rating * book.ratingnumber - s.rating) / (book.ratingnumber - 1)
                     book.ratingnumber -= 1
                 end
             else 
-                book.rating = (book.rating * book.ratingnumber - s.rating + rating) / (book.ratingnumber)
+                if book.ratingnumber == 0
+                    book.rating = rating
+                else
+                    if (s.rating == 0)
+                        book.rating = (book.rating * book.ratingnumber - s.rating + rating) / (book.ratingnumber + 1)
+                        book.ratingnumber += 1
+                    else
+                        book.rating = (book.rating * book.ratingnumber - s.rating + rating) / (book.ratingnumber)
+                    end
+                end
             end
 
             if wannaread == 1 && s.wannaread == 0
@@ -96,8 +107,10 @@ class Reviewer
             end
             book.save
 
+            comment = comment.gsub(/[\r\n|\r|\n|\t|\s|　]/,"")
+            puts comment
             s.rating = rating
-            s.comment = comment
+            s.comment = comment.slice(0, COMMENT)
             s.wannaread = wannaread
             s.recommend = recommend
             s.save
