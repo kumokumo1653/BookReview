@@ -3,12 +3,14 @@
     <head>
         <meta charset="utf-8" />
         <title>ほんろぐ</title>
-        <script type="text/javascript" src="auth.js"></script>
         <link rel="stylesheet" type="text/css" href="popup.css">
+        <link rel="stylesheet" type="text/css" href="auth.css">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script type="text/javascript" src="auth.js"></script>
     </head>
 
     <body>
-        <div class="switch" id="login">
+        <div class="switch is-show" id="login">
             <div class="switchInner" id="loginInner">
                 Enter your username and password.<br>
                 <div id="loginInput">
@@ -18,7 +20,7 @@
                     <button type="button" name="login" onclick="send(this)">ログイン</button>
                     <button type="button" name="reset" onclick="send(this)">リセット</button>
                 </div>
-                <button type="button" id="registerButton" >登録はこちら</button>
+                <button type="button" id="registerButton" onclick="switcher(this)" >登録はこちら</button>
             </div>
         </div>
         <div class="switch" id="register">
@@ -31,7 +33,7 @@
                     <button type="button" name="register" onclick="send(this)">登録</button>
                     <button type="button" name="reset" onclick="send(this)">リセット</button>
                 </div>
-                <button type="button" id="loginButton" >ログインはこちら</button>
+                <button type="button" id="loginButton" onclick="switcher(this)">ログインはこちら</button>
             </div>
         </div>
 

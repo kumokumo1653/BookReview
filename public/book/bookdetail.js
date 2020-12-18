@@ -1,6 +1,8 @@
 let bookid = location.pathname.replace(/\/book\//, "");
 let param = [];
 let bookinfo = {};
+let select = 0;
+window.onload = function () {
 if(searchFlag){
     var xhr = new XMLHttpRequest();
     let url = 'https://www.googleapis.com/books/v1/volumes/' + bookid;
@@ -38,13 +40,36 @@ if(searchFlag){
     console.log("no search");
 }
 
-let select = 0;
-function radioDeselect(obj, num) {
+select = (() => {
+    let temp = 0;
+    let stars = document.getElementsByName("rating");
+    for (let i = 0; i < stars.length; i++){
+        let star = document.getElementsByName("label" + String(i + 1));
+        if(star){
+            if(star.innerText == "★")
+                temp = temp < i ? i : temp;
+        }
+    }
+    return temp;
+})();
+
+};
+function radioSelect(obj, num) {
+    let stars = document.getElementsByName("rating");
     if(select == num){
         obj.checked = false;
         select = 0;
+        for(let i = 0; i < stars.length; i++){
+            document.getElementById("label" + String(i + 1)).innerText = "☆";
+        }
     }else{
         select = num;
+        for(let i = 0; i < stars.length; i++){
+            if (stars[i].value <= num)
+                document.getElementById("label" + String(i + 1)).innerText = "★";
+            else
+                document.getElementById("label" + String(i + 1)).innerText = "☆";
+        }
     }
 }
 

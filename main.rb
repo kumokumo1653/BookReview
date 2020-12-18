@@ -18,16 +18,17 @@ get '/' do
 end
 
 get '/login' do
-    erb :loginscr
+    erb :auth
 end
 
-get '/registration' do
-    erb :register
-end
 
 post '/auth' , provides: :json do
     params = JSON.load(request.body.read) 
     begin
+        if(params.size != 2)    
+            status 400
+            return 
+        end
         type = params[0]
         if(type["type"] == "login")
             info = params[1]
@@ -96,24 +97,17 @@ post '/auth' , provides: :json do
     end
 end
 
-post '/request' do
-    username = params[:name]
-    pass = params[:pass]
-    algorithm = 1
-    result = $user.GenAccount(username, pass, algorithm)
-    if(result)
-        redirect '/success'
-    else
-        redirect '/registfail'
-    end
-end
-
 post '/review' , provides: :json do
     params = JSON.load(request.body.read)
     begin
         type = params[0]
         #型検知
         if (type["type"] == "add")
+            if(params.size != 3)    
+                status 400
+                return 
+            end
+
             book = params[1]
             review = params[2] 
             if book.empty?
@@ -188,6 +182,10 @@ post '/review' , provides: :json do
                 return
             end
         elsif (type["type"] == "change")
+            if(params.size != 2)    
+                status 400
+                return 
+            end
             review = params[1]
             review.each{|key,value|
                 if (key == "rating")
@@ -221,6 +219,10 @@ post '/review' , provides: :json do
             end
 
         elsif (type["type"] == "delete")
+            if(params.size != 2)    
+                status 400
+                return 
+            end
             id = params[1]["id"]
             if(id.class != String)
                 puts "review info is wrong"
@@ -246,25 +248,42 @@ get '/success' do
     erb :success
 end
 
-get '/registfail' do
-    erb :registfail
-end
-
-get '/loginfail' do 
-    erb :loginfail
-end
 
 get '/logout' do
     session.clear
     erb :logout
 end
 
+get '/fail'do
+    erb :fail
+end
+
+post '/delete' ,provides: :json do
+    params = JSON.load(request.body.read)
+    begin
+        if(params.size == 1)
+            if(params[0]["type"] == "delete")
+                #delete
+                if $user.DelAccount(session[:name])
+                    status 200
+                    return 
+                end
+            end
+        end
+    rescue => exception
+        puts exception
+        status 400
+        return 
+    end
+    status 400
+    return 
+end
 get '/mypage' do
     if(session[:login_flag] == true)
-        @a = session[:name]
+        @name = session[:name]
         @wannaBook = []
         @recommendBook = []
-        temp = $review.GetReviewByUser(@a)
+        temp = $review.GetReviewByUser(@name)
 
         for i in temp
             if (i.wannaread == 1)
@@ -294,6 +313,9 @@ get '/book/:id' do
         @searchFlag = false
         if(@book == [])
             @searchFlag = true
+        else
+            #評価を小数点以下一桁に
+            @book.rating = @book.rating.round(1)
         end
         id = params[:id]
         temp = $review.GetReviewByBook(id)

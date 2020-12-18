@@ -1,9 +1,12 @@
 
 <!DOCTYPE html>
     <head>
-        <meta charset="utf-8" />
-        <title>ほんろぐ</title>
-        <script type="text/javascript" src="contents.js"></script>
+    <meta charset="utf-8" />
+    <title>ほんろぐ</title>
+    <link rel="stylesheet" type="text/css" href="popup.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="contents.css">
+    <script type="text/javascript" src="contents.js"></script>
     </head>
 
     <body>
@@ -12,7 +15,8 @@
         </center>
         <form id="tar">
         BookSearch:<input type="text" id="key" maxlength="50">
-        <input type="button" value="search" onclick="search();">
+        <button type="button" onclick="search();">検索</button>
+        <button type="button" onclick="cancel();">閉じる</button>
         </form>
 
         <div id="result"></div>
@@ -21,14 +25,14 @@
         <%if @wannaBook == []%>
             <p>まだ読みたい本はありません。</p>
         <%else%>
-            <table border=1>
+            <table class="books" border=1>
                 <tr>
-                    <th>タイトル</th>
-                    <th>著者</th>
-                    <th>出版社</th>
-                    <th>ページ数</th>
-                    <th>発行日</th>
-                    <th>あらすじ</th>
+                    <th class="title">タイトル</th>
+                    <th class="author">著者</th>
+                    <th class="publisher">出版社</th>
+                    <th class="page">ページ数</th>
+                    <th class="publishedDate">発行日</th>
+                    <th class="description">あらすじ</th>
                 </tr>
                 <%for i in @wannaBook%>
                     <tr>
@@ -45,14 +49,14 @@
 
         <%if @recommendBook != []%>
             <h2>あなたへのおすすめ</h2>
-            <table border=1>
+            <table class="books" border=1>
                 <tr>
-                    <th>タイトル</th>
-                    <th>著者</th>
-                    <th>出版社</th>
-                    <th>ページ数</th>
-                    <th>発行日</th>
-                    <th>あらすじ</th>
+                    <th class="title">タイトル</th>
+                    <th class="author">著者</th>
+                    <th class="publisher">出版社</th>
+                    <th class="page">ページ数</th>
+                    <th class="publishedDate">発行日</th>
+                    <th class="description">あらすじ</th>
                 </tr>
                 <%for i in @recommendBook%>
                     <tr>
@@ -66,6 +70,15 @@
                 <%end%>
             </table>
         <%end%>
-        <a href="/logout">logout</a>
+        <button type="button" onclick="location.href='http://127.0.0.1:9998/logout'">ログアウト</button>
+        <button type="button" id="delete" onclick="popup()">アカウント削除</button>
+        <div class="popup" id="deletePop">
+            <div class="popupInner">
+                <p>アカウントを削除します本当によろしいですか</p>
+                <button type="button" id="closeButton" >キャンセル</button>
+                <button type="button" id="runButton" onclick="deleteAccount()">はい</button>
+            </div>
+            <div class="background" id="popupBack"></div>
+        </div>
     </body>
 </html>

@@ -1,0 +1,14 @@
+button{
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #224488;
+    color: #ffffff;
+    border-radius: 5px;
+    border-style: none;
+
+}
+label, input{
+    cursor: pointer;
+}

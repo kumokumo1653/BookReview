@@ -1,0 +1,22 @@
+.books{
+    width:100%;
+}
+
+.books .title{
+    width:20%;
+}
+.books .author{
+    width:20%;
+}
+.books .publisher{
+    width:10%;
+}
+.books .page{
+    width:7%;
+}
+.books .publishedDate{
+    width:8%;
+}
+.books .description{
+    width:35%;
+}

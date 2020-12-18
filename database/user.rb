@@ -101,7 +101,7 @@ class User
                 reviews.each do |s|
                     book = Book.find(s.bookid)
                     if (s.rating != 0)
-                        if (book.ratingnumber == 1)
+                        if (book.ratingnumber <= 1)
                             book.rating = 0
                             book.ratingnumber = 0
                         else
@@ -116,13 +116,14 @@ class User
                 end
             rescue => exception
                 puts exception
-                return
+                return false
             end
             a.destroy
         rescue => e
             puts "user #{username} is not found."
+            return false
         end
-
+        return true
     end
 
     def ShowAccount

@@ -3,6 +3,8 @@
         <meta charset="utf-8" />
         <title>ほんろぐ</title>
         <link rel="stylesheet" type="text/css" href="../popup.css">
+        <link rel="stylesheet" type="text/css" href="../style.css">
+        <link rel="stylesheet" type="text/css" href="bookdetail.css">
         <script type="text/javascript"> let username = "<%=@name%>" 
                                         let searchFlag = <%= @searchFlag%>
         </script>
@@ -16,107 +18,189 @@
         <left>
         <a href="/mypage"><h3>マイページ</h3></a>
         </left>
-        <table border=1>
-            <tr>
-                <th>タイトル</th>
-                <th>著者</th>
-                <th>ページ数</th>
-                <th>出版日</th>
-                <th>出版社</th>
-                <th>あらすじ</th>
-                <th>評価</th>
-                <th>おすすめ</th>
-                <th>読みたい</th>
-            </tr>
-            <%if @searchFlag%>
-                <tr>
-                    <td id="title"></td>
-                    <td id="author"></td>
-                    <td id="page"></td>
-                    <td id="publishedDate"></td>
-                    <td id="publisher"></td>
-                    <td id="description"></td>
-                    <%if @book == []%>
-                        <td id="rating">-</td>
-                        <td id="recommend">-</td>
-                        <td id="wannaread">-</td>
-                    <%else%>
-                        <td id="rating"><%=@book.rating%></td>
-                        <td id="recommend"><%=@book.recommendnumber%></td>
-                        <td id="wannaread"><%= @book.wannanumber %></td>
-                    <%end%>
-                </tr>
-            <%else%>
-                <tr>
-                    <td id="title"><%=@book.title%></td>
-                    <td id="author"><%=@book.author%></td>
-                    <td id="page"><%=@book.page%></td>
-                    <td id="publishedDate"><%=@book.publishedDate%></td>
-                    <td id="publisher"><%=@book.publisher%></td>
-                    <td id="description"><%=@book.description%></td>
-                    <%if @book == []%>
-                        <td id="rating">-</td>
-                        <td id="recommend">-</td>
-                        <td id="wannaread">-</td>
-                    <%else%>
-                        <%if @book.rating == 0%>
-                            <td id="rating">-</td>
-                        <%else%>
-                            <td id="rating"><%=@book.rating%></td>
-                        <%end%>
-                        <td id="recommend"><%=@book.recommendnumber%></td>
-                        <td id="wannaread"><%= @book.wannanumber %></td>
-                    <%end%>
-                </tr>
-            <%end%>
-        </table>
+        <%if @searchFlag%>
+            <div id="block">
+                <table class="books" id="desctable" border=1>
+                    <tr>
+                        <th class="description">あらすじ</th>
+                    </tr>
+                    <tr>
+                        <td id="description"></td>
+                    </tr>
+                </table>
+                
+                <div id="info">
+                    <table class="books" id="titletable" border=1>
+                        <tr>
+                            <th class="title">タイトル</th>
+                        </tr>
+                        <tr>
+                            <td id="title"></td>
+                        </tr>
+                    </table>
+                    <table class="books" id="ratetable" border=1>
+                        <tr>
+                            <th class="rating">評価</th>
+                            <th class="recommend">おすすめ</th>
+                            <th class="wannaread">読みたい</th>
+                        </tr>
+                        <tr>
+                            <%if @book == []%>
+                                <td id="rating">-</td>
+                                <td id="recommend">-</td>
+                                <td id="wannaread">-</td>
+                            <%else%>
+                                <td id="rating"><%=@book.rating%></td>
+                                <td id="recommend"><%=@book.recommendnumber%></td>
+                                <td id="wannaread"><%= @book.wannanumber %></td>
+                            <%end%>
+                        </tr>
+                    </table>
+
+                    <table class="books" id="infotable" border=1>
+                        <tr>
+                            <th class="author">著者</th>
+                            <th class="page">ページ数</th>
+                        </tr>
+                        <tr>
+                            <td id="author"></td>
+                            <td id="page"></td>
+                        </tr>
+                        <tr>
+                            <th class="publisher">出版社</th>
+                            <th class="publishedDate">出版日</th>
+                        </tr>
+                        <tr>
+                                <td id="publisher"></td>
+                                <td id="publishedDate"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        <%else%>
+            <div id="block">
+                <table class="books" id="desctable" border=1>
+                    <tr>
+                        <th class="description">あらすじ</th>
+                    </tr>
+                    <tr>
+                        <td id="description"><%=@book.description%></td>
+                    </tr>
+                </table>
+                
+                <div id="info">
+                    <table class="books" id="titletable" border=1>
+                        <tr>
+                            <th class="title">タイトル</th>
+                        </tr>
+                        <tr>
+                            <td id="title"><%=@book.title%></td>
+                        </tr>
+                    </table>
+                    <table class="books" id="ratetable" border=1>
+                        <tr>
+                            <th class="rating">評価</th>
+                            <th class="recommend">おすすめ</th>
+                            <th class="wannaread">読みたい</th>
+                        </tr>
+                        <tr>
+                            <%if @book == []%>
+                                <td id="rating">-</td>
+                                <td id="recommend">-</td>
+                                <td id="wannaread">-</td>
+                            <%else%>
+                                <%if @book.rating == 0%>
+                                    <td id="rating">-</td>
+                                <%else%>
+                                    <td id="rating"><%=@book.rating%></td>
+                                <%end%>
+                                <td id="recommend"><%=@book.recommendnumber%></td>
+                                <td id="wannaread"><%= @book.wannanumber %></td>
+                            <%end%>
+                        </tr>
+                    </table>
+
+                    <table class="books" id="infotable" border=1>
+                        <tr>
+                            <th class="author">著者</th>
+                            <th class="page">ページ数</th>
+                        </tr>
+                        <tr>
+                            <td id="author"><%=@book.author%></td>
+                            <td id="page"><%=@book.page%></td>
+                        </tr>
+                        <tr>
+                            <th class="publisher">出版社</th>
+                            <th class="publishedDate">出版日</th>
+                        </tr>
+                        <tr>
+                            <td id="publisher"><%=@book.publisher%></td>
+                            <td id="publishedDate"><%=@book.publishedDate%></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        <%end%>
         
         <form id="input">
             <%if @writingFlag%>
+                <label>
+                    <input type="checkbox" name="recommend" <%if @mywriting.recommend == 1%> checked="checked"<%end%>>おすすめ
+                </label>
+
+                <br>
+
+                <label>
+                <input type="checkbox" name="wanna" <%if @mywriting.wannaread == 1%> checked="checked"<%end%>>読みたい
+                </label>
+
+                <br>
+
+                <div class="stars">評価
+                    <input type="radio" id="star1" value="1" name="rating" onclick="radioSelect(this, 1)"<%if @mywriting.rating == 1%> checked="checked"<%end%>>
+                    <label for="star1" id="label1">   <%if @mywriting.rating >= 1%>★<%else%>☆<%end%></label>
+                    
+                    <input type="radio" id="star2" value="2" name="rating" onclick="radioSelect(this, 2)"<%if @mywriting.rating == 2%> checked="checked"<%end%>>
+                     <label for="star2" id="label2">   <%if @mywriting.rating >= 2%>★<%else%>☆<%end%></label>
+                    
+                    <input type="radio" id="star3" value="3" name="rating" onclick="radioSelect(this, 3)"<%if @mywriting.rating == 3%> checked="checked"<%end%>>
+                     <label for="star3" id="label3">   <%if @mywriting.rating >= 3%>★<%else%>☆<%end%></label>
+                    
+                    <input type="radio" id="star4" value="4" name="rating" onclick="radioSelect(this, 4)"<%if @mywriting.rating == 4%> checked="checked"<%end%>>
+                     <label for="star4" id="label4">   <%if @mywriting.rating >= 4%>★<%else%>☆<%end%></label>
+                    
+                    <input type="radio" id="star5" value="5" name="rating" onclick="radioSelect(this, 5)"<%if @mywriting.rating == 5%> checked="checked"<%end%>>
+                     <label for="star5" id="label5">   <%if @mywriting.rating >= 5%>★<%else%>☆<%end%></label>
+                </div>
+                <br>
+                <table id="text">
+                <td>コメント<br>150字以内</td><td><textarea name="comment"><%= @mywriting.comment%></textarea></td> 
                 <table>
-                    <tr>
-                        <td><input type="checkbox" name="recommend" <%if @mywriting.recommend == 1%> checked="checked"<%end%>>おすすめ</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name="wanna" <%if @mywriting.wannaread == 1%> checked="checked"<%end%>>読みたい</td>
-                    </tr>
-                    <tr>
-                        <td><input type="radio" value="1" name="rating" onclick="radioDeselect(this, 1)"<%if @mywriting.rating == 1%> checked="checked"<%end%>>1</td>
-                        <td><input type="radio" value="2" name="rating" onclick="radioDeselect(this, 2)"<%if @mywriting.rating == 2%> checked="checked"<%end%>>2</td>
-                        <td><input type="radio" value="3" name="rating" onclick="radioDeselect(this, 3)"<%if @mywriting.rating == 3%> checked="checked"<%end%>>3</td>
-                        <td><input type="radio" value="4" name="rating" onclick="radioDeselect(this, 4)"<%if @mywriting.rating == 4%> checked="checked"<%end%>>4</td>
-                        <td><input type="radio" value="5" name="rating" onclick="radioDeselect(this, 5)"<%if @mywriting.rating == 5%> checked="checked"<%end%>>5</td>
-                    </tr>
-                    <tr>
-                        <td>コメント</td><td><textarea name="comment"><%= @mywriting.comment%></textarea></td>
-                    </tr>
-                    <tr>
-                        <td><button type="button" name="send" onclick="transmission(this)">更新</button></td>
-                        <td><button type="button" name="send" onclick="transmission(this)">削除</button></td>
-                    </tr>
-                </table>
+                <br>
+                <button type="button" name="send" onclick="transmission(this)">更新</button> 
+                <button type="button" name="send" onclick="transmission(this)">削除</button>
             <%else%>
+                <label>
+                <input type="checkbox" name="recommend">おすすめ
+                </label>
+                <br>
+                <label>
+                <input type="checkbox" name="wanna">読みたい
+                </label>
+                <br>
+
+                <div class="stars">
+                    <input type="radio" id="star1" value="1" name="rating" onclick="radioSelect(this, 1)"><label for="star1" id="label1">☆</label>
+                    <input type="radio" id="star2" value="2" name="rating" onclick="radioSelect(this, 2)"><label for="star2" id="label2">☆</label>
+                    <input type="radio" id="star3" value="3" name="rating" onclick="radioSelect(this, 3)"><label for="star3" id="label3">☆</label>
+                    <input type="radio" id="star4" value="4" name="rating" onclick="radioSelect(this, 4)"><label for="star4" id="label4">☆</label>
+                    <input type="radio" id="star5" value="5" name="rating" onclick="radioSelect(this, 5)"><label for="star5" id="label5">☆</label>
+                </div>
+                <br>
+                <table id="text">
+                <td>コメント<br>150字以内</td><td><textarea name="comment"><%= @mywriting.comment%></textarea></td> 
                 <table>
-                    <tr>
-                        <td><input type="checkbox" name="recommend">おすすめ</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name="wanna">読みたい</td>
-                    </tr>
-                    <tr>
-                        <td><input type="radio" value="1" name="rating" onclick="radioDeselect(this, 1)">1</td>
-                        <td><input type="radio" value="2" name="rating" onclick="radioDeselect(this, 2)">2</td>
-                        <td><input type="radio" value="3" name="rating" onclick="radioDeselect(this, 3)">3</td>
-                        <td><input type="radio" value="4" name="rating" onclick="radioDeselect(this, 4)">4</td>
-                        <td><input type="radio" value="5" name="rating" onclick="radioDeselect(this, 5)">5</td>
-                    </tr>
-                    <tr>
-                        <td>コメント</td><td><textarea name="comment"></textarea></td>
-                    </tr>
-                    <tr>
-                        <td><button type="button" name="send" onclick="transmission(this)">送信</button></td>
-                    </tr>
-                </table>
+                <button type="button" name="send" onclick="transmission(this)">送信</button>
             <%end%>
         </form>
 
@@ -124,19 +208,19 @@
         <p>レビューはありません。</p>
         <%else %>
             <table>
-                <tr>
-                    <th>ユーザー名</th>
-                    <th>コメント<th>
-                </tr>
                 <%for a in @reviews%>
                     <tr>
+                        <th>ユーザー名</th>
                         <td><%= a.name%></td>
+                    </tr>
+                    <tr>
+                        <th>コメント</th>
                         <td><%= a.comment%></td>
                     </tr>
                 <%end%>
             </table>
         <%end%>
-        <a href="/logout">logout</a>
+        <button type="button" onclick="location.href='http://127.0.0.1:9998/logout'">ログアウト</button>
 
         <div class="popup" id="limitPop">
             <div class="popupInner">

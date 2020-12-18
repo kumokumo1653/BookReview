@@ -73,7 +73,7 @@ class Reviewer
             #レビューの更新
             book = Book.find(s.bookid)
             if(rating == 0)
-                if (book.ratingnumber == 1)
+                if (book.ratingnumber <= 1)
                     book.rating = 0
                     book.ratingnumber = 0
                 else
@@ -83,6 +83,7 @@ class Reviewer
             else 
                 if book.ratingnumber == 0
                     book.rating = rating
+                    book.ratingnumber += 1
                 else
                     if (s.rating == 0)
                         book.rating = (book.rating * book.ratingnumber - s.rating + rating) / (book.ratingnumber + 1)
@@ -92,7 +93,7 @@ class Reviewer
                     end
                 end
             end
-
+            puts book.ratingnumber
             if wannaread == 1 && s.wannaread == 0
                 book.wannanumber += 1
             end
@@ -127,7 +128,7 @@ class Reviewer
                 #レビュー更新
                 book = Book.find(s.bookid)
                 if (s.rating != 0)
-                    if (book.ratingnumber == 1)
+                    if (book.ratingnumber <= 1)
                         book.rating = 0
                         book.ratingnumber = 0
                     else
@@ -135,6 +136,7 @@ class Reviewer
                         book.ratingnumber -= 1
                     end
                 end
+                puts book.ratingnumber
                 book.wannanumber -= s.wannaread
                 book.recommendnumber -= s.recommend
                 book.save

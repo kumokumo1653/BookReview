@@ -107,3 +107,31 @@ function send(obj){
     }
     params = [];
 }
+
+
+function switcher(obj){
+    if (obj.id == "registerButton"){
+        status = "register";
+    }else if (obj.id == "loginButton"){
+        status = "login";
+    }
+    
+    dispform(status);
+}
+
+function dispform(status){
+    let loginElement = document.getElementById("login");
+    let registerElement = document.getElementById("register")
+    if(loginElement && registerElement){
+        console.log(status);
+        if (status == "login"){
+
+            //switch
+            loginElement.classList.add('is-show');
+            registerElement.classList.remove('is-show');
+        }else if(status == "register"){
+            registerElement.classList.add('is-show');
+            loginElement.classList.remove('is-show');
+        }
+    }
+}

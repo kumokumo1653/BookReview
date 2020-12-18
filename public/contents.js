@@ -9,13 +9,17 @@ function search(){
     xhr.send(null);
 }
 
+function cancel(){
+    document.getElementById("result").innerHTML = "";
+}
 function checkStatus(){
     s = "";
     if(xhr.readyState == 4 && xhr.status == 200){
         a = xhr.response;
         s = "全部で" + a.totalItems + "件あります．<p>";
-        s += "<table border=1>";
-        s += "<tr><th>タイトル</th><th>著者</th><th>出版社</th><th>ページ数</th><th>発行日</th><th>あらすじ</th></tr>";
+        s += "<table class='books' border=1>";
+                    
+        s += '<tr><th class="title">タイトル</th> <th class="author">著者</th> <th class="publisher">出版社</th> <th class="page">ページ数</th> <th class="publishedDate">発行日</th> <th class="description">あらすじ</th></tr>';
         for (let i = 0; i <a.items.length; i++){
             s += "<tr>";
             s += "<td>" + "<a href='" + "http://127.0.0.1:9998/book/" + a.items[i].id+ "'>"+ a.items[i].volumeInfo.title + "</a></td>";
@@ -39,4 +43,43 @@ function checkStatus(){
         s += "</table>";
     }
     document.getElementById("result").innerHTML = s;
+}
+
+
+function popup(){
+
+    let pop = document.getElementById("deletePop");
+    if(pop){
+        //popup
+        pop.classList.add('is-show');
+        let background = document.getElementById("popupBack");
+        let closeButton = document.getElementById("closeButton");
+        if(background){
+            background.addEventListener('click', () => {
+                pop.classList.remove('is-show');
+            });
+        }
+        if(closeButton){
+            closeButton.addEventListener('click', () => {
+                pop.classList.remove('is-show');
+            });
+        }
+    }
+}
+function deleteAccount(){
+    console.log("delete");
+    let request = new XMLHttpRequest();
+    let params = [{"type" : "delete"}];
+    request.open("POST", "http://127.0.0.1:9998/delete");
+    request.setRequestHeader("Content-Type", "application/json");
+    request.send(JSON.stringify(params));
+    request.onload = () => {
+        if(request.status == 200){
+            console.log("responce");
+            location.href = 'http://127.0.0.1:9998/success';
+        }else{
+            console.log("error");
+            location.href = 'http://127.0.0.1:9998/fail';
+        }
+    };
 }

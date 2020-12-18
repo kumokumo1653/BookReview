@@ -1,0 +1,49 @@
+.stars input[type='radio']{
+  display: none;
+}
+
+
+.stars{
+  font-size: 30px;
+}
+.stars label[id]{
+  font-size: 30px;
+  color:#e6bf00;
+}
+
+#input label:not([id]){
+  font-size: 20px;
+}
+
+textarea{
+  width: 50em;
+  height: 7em;
+}
+
+#text td{
+  text-align: center;
+  vertical-align: middle;  
+}
+#block{
+    display: flex;
+}
+
+#desctable{
+    flex:1;
+}
+
+#info{
+    flex:1;
+}
+#info > table{
+    width:100%;
+}
+#titletable td{
+    font-size: 25px;
+}
+#ratetable td{
+    text-align: center;
+}
+#infotable td{
+    text-align: center;
+}
