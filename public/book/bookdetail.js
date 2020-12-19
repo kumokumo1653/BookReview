@@ -44,13 +44,12 @@ select = (() => {
     let temp = 0;
     let stars = document.getElementsByName("rating");
     for (let i = 0; i < stars.length; i++){
-        let star = document.getElementsByName("label" + String(i + 1));
+        let star = document.getElementById("label" + String(i + 1));
         if(star){
             if(star.innerText == "★")
-                temp = temp < i ? i : temp;
+                temp = temp < i + 1 ? i + 1 : temp;
         }
     }
-    console.log(temp);
     return temp;
 })();
 

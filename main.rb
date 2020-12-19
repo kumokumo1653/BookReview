@@ -299,6 +299,8 @@ get '/mypage' do
                 @recommendBook.push(i)
             end
         end
+        @recommendBook = @recommendBook.shuffle
+        @recommendBook = @recommendBook.slice(0,10)
         erb :contents
     else
         erb :badrequest

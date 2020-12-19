@@ -24,3 +24,8 @@
     opacity: 1;
     visibility: visible;
 }
+
+.text td{
+  text-align: center;
+  vertical-align: middle;  
+}

@@ -1,19 +1,18 @@
 create table accounts(
-    id char(20) primary key,
+    id char(15) primary key,
     salt varchar(40),
     hashed varchar(40),
-    algo char(5),
-    date varchar(64)
+    algo char(5)
 );
 
 create table books(
-    id char(20) primary key,
-    title varchar(100) not null,
-    author varchar(100),
+    id char(15) primary key,
+    title varchar(30) not null,
+    author varchar(30),
     page integer,
-    publishedDate varchar(100),
-    publisher varchar(100),
-    description varchar(100),
+    publisher varchar(20),
+    publishedDate varchar(15),
+    description varchar(300),
     rating real,
     ratingnumber integer,
     wannanumber integer,
@@ -21,11 +20,11 @@ create table books(
 );
 
 create table details(
-    id char(20) primary key,
+    id char(30) primary key,
     rating integer ,
-    comment text ,
-    bookid char(20) not null,
-    name char(20) not null,
+    comment varchar(150) ,
+    bookid char(15) not null,
+    name char(15) not null,
     wannaread integer,
     recommend integer,
     foreign key (bookid) references books(id),

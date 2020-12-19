@@ -40,7 +40,6 @@ class User
             s.salt = salt
             s.hashed = hashed
             s.algo = algorithm
-            s.date = "-1"
             s.save
         rescue => e
             puts "That user name is already registered"
@@ -58,7 +57,6 @@ class User
             db_salt = a.salt
             db_hashed = a.hashed
             db_algo = a.algo
-            db_date = a.date
         rescue => e
             puts "user #{username} is not found."
             return false
@@ -73,15 +71,6 @@ class User
 
         #Success?
         if db_hashed == trial_hashed
-            puts "login success"
-            a = Account.find(username)
-            if a.date.to_i == -1
-                puts "first login"
-            else
-                puts "last:#{Time.at(a.date.to_i).strftime("%Y年 %m月 %d日 %H時 %M分 %S秒")}"
-            end
-            a.date = Time.now.to_i
-            a.save
             return true
         else 
             puts "login failed"

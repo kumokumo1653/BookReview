@@ -4,22 +4,10 @@ let params = [];
 function send(obj){
     let request = new XMLHttpRequest();
     if(obj.name == "login"){
-        let [name, pass] = (() => {
-            let parent = obj.parentNode;
-            let cnt = parent.childElementCount;
-            temp = ["",""]
-            for(let i = 0; i < cnt; i++){
-                if(parent.children[i].name == "name")
-                    temp[0] = parent.children[i].value;
-                if(parent.children[i].name == "pass")
-                    temp[1] = parent.children[i].value;
-            }
-            return temp;
-        })();
         params.push({"type" : "login"});
         params.push({
-            "name" : name,
-            "pass" : pass
+            "name" : document.getElementById("loginName").value,
+            "pass" : document.getElementById("loginPass").value
         });
         request.open("POST", "http://127.0.0.1:9998/auth");
         request.setRequestHeader("Content-Type", "application/json");
@@ -63,8 +51,8 @@ function send(obj){
         })();
         params.push({"type" : "register"});
         params.push({
-            "name" : name,
-            "pass" : pass
+            "name" : document.getElementById("registerName").value,
+            "pass" : document.getElementById("registerPass").value
         });
         request.open("POST", "http://127.0.0.1:9998/auth");
         request.setRequestHeader("Content-Type", "application/json");

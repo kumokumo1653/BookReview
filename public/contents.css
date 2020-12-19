@@ -20,3 +20,8 @@
 .books .description{
     width:35%;
 }
+
+
+button.menue{
+    float :right;
+}

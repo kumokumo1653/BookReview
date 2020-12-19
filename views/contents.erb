@@ -20,6 +20,9 @@
         <button type="button" onclick="cancel();">閉じる</button>
         </form>
 
+        <button type="button" class="menue" onclick="location.href='http://127.0.0.1:9998/logout'">ログアウト</button>
+        <button type="button" class="menue" id="delete" onclick="popup()">アカウント削除</button>
+
         <div id="result"></div>
 
         <h2>読みたいリスト</h2>
@@ -71,13 +74,11 @@
                 <%end%>
             </table>
         <%end%>
-        <button type="button" onclick="location.href='http://127.0.0.1:9998/logout'">ログアウト</button>
-        <button type="button" id="delete" onclick="popup()">アカウント削除</button>
         <div class="popup" id="deletePop">
             <div class="popupInner">
                 <p>アカウントを削除します本当によろしいですか</p>
-                <button type="button" id="runButton" onclick="deleteAccount()">はい</button>
                 <button type="button" id="closeButton" >キャンセル</button>
+                <button type="button" id="runButton" onclick="deleteAccount()">はい</button>
             </div>
             <div class="background" id="deletePopupBack"></div>
         </div>

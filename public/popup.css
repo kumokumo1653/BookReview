@@ -20,6 +20,9 @@
   background-color: #fff;
   z-index: 2;
 }   
+.popupInner button{
+  float:right;
+}
 .popup.is-show {
     opacity: 1;
     visibility: visible;

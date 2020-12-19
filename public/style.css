@@ -29,3 +29,22 @@ center{
     border-right: transparent;
     border-top: transparent;
 }
+
+.message{
+    width: 30%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    margin: auto;
+}
+
+.message p{
+    width: 75%;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+.message button{
+    float: right;
+}
