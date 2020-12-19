@@ -2,8 +2,8 @@
     <head>
         <meta charset="utf-8" />
         <title>ほんろぐ</title>
-        <link rel="stylesheet" type="text/css" href="../popup.css">
         <link rel="stylesheet" type="text/css" href="../style.css">
+        <link rel="stylesheet" type="text/css" href="../popup.css">
         <link rel="stylesheet" type="text/css" href="bookdetail.css">
         <script type="text/javascript"> let username = "<%=@name%>" 
                                         let searchFlag = <%= @searchFlag%>
@@ -16,7 +16,7 @@
         <h1>ほんのページ</h1>
         </center>
         <left>
-        <a href="/mypage"><h3>マイページ</h3></a>
+        <button type="button" onclick="location.href='http://127.0.0.1:9998/mypage'">マイページ</button>
         </left>
         <%if @searchFlag%>
             <div id="block">
@@ -143,12 +143,11 @@
         <%end%>
         
         <form id="input">
+            入力フォーム<br>
             <%if @writingFlag%>
                 <label>
                     <input type="checkbox" name="recommend" <%if @mywriting.recommend == 1%> checked="checked"<%end%>>おすすめ
                 </label>
-
-                <br>
 
                 <label>
                 <input type="checkbox" name="wanna" <%if @mywriting.wannaread == 1%> checked="checked"<%end%>>読みたい
@@ -175,7 +174,7 @@
                 <br>
                 <table id="text">
                 <td>コメント<br>150字以内</td><td><textarea name="comment"><%= @mywriting.comment%></textarea></td> 
-                <table>
+                </table>
                 <br>
                 <button type="button" name="send" onclick="transmission(this)">更新</button> 
                 <button type="button" name="send" onclick="transmission(this)">削除</button>
@@ -183,7 +182,6 @@
                 <label>
                 <input type="checkbox" name="recommend">おすすめ
                 </label>
-                <br>
                 <label>
                 <input type="checkbox" name="wanna">読みたい
                 </label>
@@ -199,7 +197,7 @@
                 <br>
                 <table id="text">
                 <td>コメント<br>150字以内</td><td><textarea name="comment"><%= @mywriting.comment%></textarea></td> 
-                <table>
+                </table>
                 <button type="button" name="send" onclick="transmission(this)">送信</button>
             <%end%>
         </form>
@@ -207,8 +205,9 @@
         <%if @reviews.empty? %>
         <p>レビューはありません。</p>
         <%else %>
-            <table>
-                <%for a in @reviews%>
+            <p>レビュー一覧</p>
+            <%for a in @reviews%>
+                <table class="comment">
                     <tr>
                         <th>ユーザー名</th>
                         <td><%= a.name%></td>
@@ -217,13 +216,14 @@
                         <th>コメント</th>
                         <td><%= a.comment%></td>
                     </tr>
-                <%end%>
-            </table>
+                </table>
+            <%end%>
         <%end%>
         <button type="button" onclick="location.href='http://127.0.0.1:9998/logout'">ログアウト</button>
 
         <div class="popup" id="limitPop">
             <div class="popupInner">
+                <p>インターネット接続を確認してください</p>
                 <p>アクセス回数がGoogleBooksAPIの制限に抵触しました．少し待ってからもう一度お試しください．</p>
                 <button type="button" id="limitButton" onclick="location.href='http://127.0.0.1:9998/mypage'">マイページに戻る</button>
             </div>

@@ -3,6 +3,7 @@
     <head>
     <meta charset="utf-8" />
     <title>ほんろぐ</title>
+    <link rel="icon" href="favi.ico">
     <link rel="stylesheet" type="text/css" href="popup.css">
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" type="text/css" href="contents.css">
@@ -75,10 +76,19 @@
         <div class="popup" id="deletePop">
             <div class="popupInner">
                 <p>アカウントを削除します本当によろしいですか</p>
-                <button type="button" id="closeButton" >キャンセル</button>
                 <button type="button" id="runButton" onclick="deleteAccount()">はい</button>
+                <button type="button" id="closeButton" >キャンセル</button>
             </div>
-            <div class="background" id="popupBack"></div>
+            <div class="background" id="deletePopupBack"></div>
+        </div>
+
+        <div class="popup" id="limitPop">
+            <div class="popupInner">
+                <p>インターネット接続を確認してください</p>
+                <p>アクセス回数がGoogleBooksAPIの制限に抵触しました．少し待ってからもう一度お試しください．</p>
+                <button type="button" id="limitButton" >閉じる</button>
+            </div>
+            <div class="background" id="limitPopupBack"></div>
         </div>
     </body>
 </html>

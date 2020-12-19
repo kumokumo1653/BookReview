@@ -50,12 +50,14 @@ select = (() => {
                 temp = temp < i ? i : temp;
         }
     }
+    console.log(temp);
     return temp;
 })();
 
 };
 function radioSelect(obj, num) {
     let stars = document.getElementsByName("rating");
+    console.log(select);
     if(select == num){
         obj.checked = false;
         select = 0;

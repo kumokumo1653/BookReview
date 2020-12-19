@@ -41,6 +41,26 @@ function checkStatus(){
             s += "</tr>";
         }
         s += "</table>";
+    }else{
+        //error
+        console.log("limit");
+        let limitPop = document.getElementById("limitPop");
+        if(limitPop){
+            //popup
+            limitPop.classList.add('is-show');
+        }
+        let background = document.getElementById("limitPopupBack");
+        let closeButton = document.getElementById("limitButton");
+        if(background){
+            background.addEventListener('click', () => {
+                limitPop.classList.remove('is-show');
+            });
+        }
+        if(closeButton){
+            closeButton.addEventListener('click', () => {
+                limitPop.classList.remove('is-show');
+            });
+        }
     }
     document.getElementById("result").innerHTML = s;
 }
@@ -52,7 +72,7 @@ function popup(){
     if(pop){
         //popup
         pop.classList.add('is-show');
-        let background = document.getElementById("popupBack");
+        let background = document.getElementById("deletePopupBack");
         let closeButton = document.getElementById("closeButton");
         if(background){
             background.addEventListener('click', () => {

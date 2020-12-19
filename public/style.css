@@ -12,3 +12,20 @@ button{
 label, input{
     cursor: pointer;
 }
+
+table{
+    border-collapse: collapse;
+}
+
+th{
+    color: #224488;
+    background: #b3ccff;
+}
+
+center{
+    margin-bottom: 15px;
+    border: 3px solid;
+    border-left: transparent;
+    border-right: transparent;
+    border-top: transparent;
+}
