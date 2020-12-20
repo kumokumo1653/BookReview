@@ -2,6 +2,21 @@ let bookid = location.pathname.replace(/\/book\//, "");
 let param = [];
 let bookinfo = {};
 let select = 0;
+
+function escapeHtml (string) {
+  if(typeof string !== 'string') {
+    return string;
+  }
+  return string.replace(/[&"<>]/g, function(match) {
+    return {
+      '&': '&amp;',
+      '"': '&quot;',
+      '<': '&lt;',
+      '>': '&gt;',
+    }[match]
+  });
+}
+
 window.onload = function () {
 if(searchFlag){
     var xhr = new XMLHttpRequest();
@@ -12,12 +27,12 @@ if(searchFlag){
     xhr.onload = () => {
         if(xhr.status == 200){
             console.log(xhr.response);
-            document.getElementById("title").innerHTML = xhr.response.volumeInfo.title;
-            document.getElementById("author").innerHTML = xhr.response.volumeInfo.authors;
-            document.getElementById("page").innerHTML = xhr.response.volumeInfo.pageCount;
-            document.getElementById("publishedDate").innerHTML = xhr.response.volumeInfo.publishedDate;
-            document.getElementById("publisher").innerHTML = xhr.response.volumeInfo.publisher;
-            document.getElementById("description").innerHTML = xhr.response.volumeInfo.description;
+            document.getElementById("title").innerHTML = escapeHtml(xhr.response.volumeInfo.title);
+            document.getElementById("author").innerHTML = escapeHtml(xhr.response.volumeInfo.authors);
+            document.getElementById("page").innerHTML = escapeHtml(xhr.response.volumeInfo.pageCount);
+            document.getElementById("publishedDate").innerHTML = escapeHtml(xhr.response.volumeInfo.publishedDate);
+            document.getElementById("publisher").innerHTML = escapeHtml(xhr.response.volumeInfo.publisher);
+            document.getElementById("description").innerHTML = escapeHtml(xhr.response.volumeInfo.description);
             bookinfo = {
                 "id" : bookid,
                 "title" : xhr.response.volumeInfo.title,

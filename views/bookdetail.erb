@@ -85,7 +85,7 @@
                         <th class="description">あらすじ</th>
                     </tr>
                     <tr>
-                        <td id="description"><%=@book.description%></td>
+                        <td id="description"><%=CGI.escapeHTML(@book.description)%></td>
                     </tr>
                 </table>
                 
@@ -95,7 +95,7 @@
                             <th class="title">タイトル</th>
                         </tr>
                         <tr>
-                            <td id="title"><%=@book.title%></td>
+                            <td id="title"><%=CGI.escapeHTML(@book.title)%></td>
                         </tr>
                     </table>
                     <table class="books" id="ratetable" border=1>
@@ -127,7 +127,7 @@
                             <th class="page">ページ数</th>
                         </tr>
                         <tr>
-                            <td id="author"><%=@book.author%></td>
+                            <td id="author"><%=CGI.escapeHTML(@book.author)%></td>
                             <td id="page"><%=@book.page%></td>
                         </tr>
                         <tr>
@@ -135,8 +135,8 @@
                             <th class="publishedDate">出版日</th>
                         </tr>
                         <tr>
-                            <td id="publisher"><%=@book.publisher%></td>
-                            <td id="publishedDate"><%=@book.publishedDate%></td>
+                            <td id="publisher"><%=CGI.escapeHTML(@book.publisher)%></td>
+                            <td id="publishedDate"><%=CGI.escapeHTML(@book.publishedDate)%></td>
                         </tr>
                     </table>
                 </div>
@@ -197,7 +197,7 @@
                 </div>
                 <br>
                 <table id="text">
-                <td>コメント<br>150字以内</td><td><textarea name="comment"><%= @mywriting.comment%></textarea></td> 
+                <td>コメント<br>150字以内</td><td><textarea name="comment"></textarea></td> 
                 </table>
                 <button type="button" name="send" onclick="transmission(this)">送信</button>
             <%end%>

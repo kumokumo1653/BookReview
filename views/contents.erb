@@ -45,7 +45,7 @@
                         <td><%= i.publisher%></td>
                         <td><%= i.page%></td>
                         <td><%= i.publishedDate%></td>
-                        <td><%= i.description%></td>
+                        <td><%= CGI.escapeHTML(i.description)%></td>
                     </tr>
                 <%end%>
             </table>
@@ -69,7 +69,7 @@
                         <td><%= i.publisher%></td>
                         <td><%= i.page%></td>
                         <td><%= i.publishedDate%></td>
-                        <td><%= i.description%></td>
+                        <td><%= CGI.escapeHTML(i.description)%></td>
                     </tr>
                 <%end%>
             </table>

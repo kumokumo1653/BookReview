@@ -24,8 +24,6 @@ end
 
 class Library
     def initialize
-        @Lib = Book.all
-        @Review = Detail.all
     end
 
     def Register(id, title, author, page, publishedDate, publisher, description)
@@ -79,19 +77,17 @@ class Library
         begin
             a = Book.find(id)
             #該当の本のレビューを消す
-            begin
-                reviews = Detail.where(bookid:id)
-                reviews.each do |s|
-                    s.destroy
-                end
-            rescue => exception
-                return
+            reviews = Detail.where(bookid:id)
+            reviews.each do |s|
+                s.destroy
             end
             a.destroy
         rescue => exception
             puts exception
             puts "book #{id} is not found."
+            return false
         end
+
     end
 
     def Show
@@ -114,7 +110,7 @@ class Library
     end
     def IsBook(id)
         a = Book.find_by(id:id)
-        if a == nil
+        if a.nil?
             return false
         else
             return true

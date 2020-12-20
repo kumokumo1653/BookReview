@@ -118,6 +118,11 @@ post '/review' , provides: :json do
                 status 400
                 return 
             end
+            if book.size != 7
+                puts "book info is wrong"
+                status 400
+                return 
+            end
             book.each{|key,value|
                 puts key
                 puts value.class

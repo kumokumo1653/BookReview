@@ -1,6 +1,5 @@
 require 'digest/md5'
 require 'active_record'
-require 'time'
 
 ActiveRecord::Base.configurations = YAML.load_file('./database/database.yml')
 ActiveRecord::Base.establish_connection :development
@@ -28,7 +27,7 @@ class User
         if(!(username =~ /\A[a-z\d]+\z/i))
             return false
         end
-        if(rawpasswd.length > USERNAME)
+        if(rawpasswd.length > PASSWD)
             return false
         end
         if(!(rawpasswd =~ /\A[a-z\d]+\z/i))
@@ -51,6 +50,18 @@ class User
     def CheckAccount(username, passwd)
         puts "username = #{username}"
         puts "passwd = #{passwd}"
+        if(username.length > USERNAME)
+            return false
+        end
+        if(!(username =~ /\A[a-z\d]+\z/i))
+            return false
+        end
+        if(passwd.length > PASSWD)
+            return false
+        end
+        if(!(passwd =~ /\A[a-z\d]+\z/i))
+            return false
+        end
         begin
             a = Account.find(username)
             db_username = a.id

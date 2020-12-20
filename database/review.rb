@@ -14,9 +14,6 @@ end
 
 class Reviewer
     def initialize
-        @Lib = Book.all
-        @Account = Account.all
-        @Review = Detail.all
     end
 
     def Add(bookId, username, rating, comment, wannaread, recommend)
@@ -41,10 +38,22 @@ class Reviewer
         begin
             comment =comment.gsub(/[\r\n|\r|\n|\t|\s] 　/,"")
             s.id = book.id + user.id
-            s.rating = rating
+            if rating >= 0.0 && rating <= 5.0
+                s.rating = rating
+            else
+                return false
+            end
             s.comment = comment.slice(0, COMMENT)
-            s.wannaread = wannaread
-            s.recommend = recommend
+            if(wannaread == 1 || wannaread == 0)
+                s.wannaread = wannaread
+            else
+                return false
+            end
+            if(recommend == 1 || recommend == 0)
+                s.recommend = recommend
+            else
+                return false
+            end
             s.bookid = book.id
             s.name = user.id
             s.save
@@ -72,6 +81,17 @@ class Reviewer
             s = Detail.find(id)
             #レビューの更新
             book = Book.find(s.bookid)
+            if (rating > 5.0 || rating < 0.0)
+                return false
+            end
+            if(wannaread != 1 && wannaread != 0)
+                return false
+            end
+            if(recommend != 1 && recommend != 0)
+                s.recommend = recommend
+            else
+                return false
+            end
             if(rating == 0)
                 if (book.ratingnumber <= 1)
                     book.rating = 0
@@ -93,7 +113,7 @@ class Reviewer
                     end
                 end
             end
-            puts book.ratingnumber
+
             if wannaread == 1 && s.wannaread == 0
                 book.wannanumber += 1
             end
@@ -109,7 +129,6 @@ class Reviewer
             book.save
 
             comment = comment.gsub(/[\r\n|\r|\n|\t|\s|　]/,"")
-            puts comment
             s.rating = rating
             s.comment = comment.slice(0, COMMENT)
             s.wannaread = wannaread
@@ -119,6 +138,7 @@ class Reviewer
             puts "review is not found"
             return false
         end
+        return true
     end
 
     def Delete(id)
@@ -136,19 +156,20 @@ class Reviewer
                         book.ratingnumber -= 1
                     end
                 end
-                puts book.ratingnumber
                 book.wannanumber -= s.wannaread
                 book.recommendnumber -= s.recommend
                 book.save
             rescue => exception
                 puts exception
                 puts "this book is not found"                
-                return 
+                return false
             end
             s.destroy
         rescue => exception
             puts "review is not found"
+            return false
         end
+        return true
     end
 
     def Show
