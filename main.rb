@@ -24,230 +24,222 @@ end
 
 post '/auth' , provides: :json do
     params = JSON.load(request.body.read) 
-    begin
-        if(params.size != 2)    
-            status 400
-            return 
-        end
-        type = params[0]
-        if(type["type"] == "login")
-            info = params[1]
-            if info.empty?
-                status 400
-                return 
-            end
-            info.each{|key,value|
-                if(key == "name" || key == "pass")
-                    if(value.class != String)
-                        status 400
-                        puts "info is wrong"
-                        return
-                    end
-                else
-                    status 400
-                    puts "info is wrong"
-                    return
-                end
-            }
-            #check
-            result = $user.CheckAccount(info["name"], info["pass"])
-            if (result)
-                session[:login_flag] = true
-                session[:name] = info["name"]
-                status 200
-                return 
-            else
-                session[:login_flag] = false
-                status 400
-                return
-            end
-        elsif (type["type"] == "register")
-            info = params[1]
-            if info.empty?
-                status 400
-                return 
-            end
-            info.each{|key,value|
-                if(key == "name" || key == "pass")
-                    if(value.class != String)
-                        status 400
-                        puts "info is wrong"
-                        return
-                    end
-                else
-                    status 400
-                    puts "info is wrong"
-                    return
-                end
-            }
-            #generate
-            result = $user.GenAccount(info["name"], info["pass"],1)
-            if (result)
-                status 200
-                return 
-            else
-                status 400
-                return
-            end
-        end
-    rescue => exception
-        puts exception
+    if(params.size != 2)    
         status 400
         return 
+    end
+    type = params[0]
+    if(params[1].size != 2)
+        status 400
+        return 
+    end
+
+    if(type["type"] == "login")
+        info = params[1]
+        info.each{|key,value|
+            if(key == "name" || key == "pass")
+                if(value.class != String)
+                    status 400
+                    puts "info is wrong"
+                    return
+                end
+            else
+                status 400
+                puts "info is wrong"
+                return
+            end
+        }
+        #check
+        result = $user.CheckAccount(info["name"], info["pass"])
+        if (result)
+            session[:login_flag] = true
+            session[:name] = info["name"]
+            status 200
+            return 
+        else
+            session[:login_flag] = false
+            status 400
+            return
+        end
+    elsif (type["type"] == "register")
+        info = params[1]
+        info.each{|key,value|
+            if(key == "name" || key == "pass")
+                if(value.class != String)
+                    status 400
+                    puts "info is wrong"
+                    return
+                end
+            else
+                status 400
+                puts "info is wrong"
+                return
+            end
+        }
+        #generate
+        result = $user.GenAccount(info["name"], info["pass"],1)
+        if (result)
+            status 200
+            return 
+        else
+            status 400
+            return
+        end
     end
 end
 
 post '/review' , provides: :json do
     params = JSON.load(request.body.read)
-    begin
-        type = params[0]
-        #型検知
-        if (type["type"] == "add")
-            if(params.size != 3)    
-                status 400
-                return 
-            end
+    type = params[0]
+    #型検知
+    if (type["type"] == "add")
+        if(params.size != 3)    
+            status 400
+            return 
+        end
 
-            book = params[1]
-            review = params[2] 
-            if book.empty?
-                status 400
-                return 
-            end
-            if review.empty?
-                status 400
-                return 
-            end
-            if book.size != 7
-                puts "book info is wrong"
-                status 400
-                return 
-            end
-            book.each{|key,value|
-                puts key
-                puts value.class
-                if (key == "author")
-                    if (value.class != Array)
-                        puts "book info is wrong"
-                        status 400
-                        return
-                    end
-                elsif (key == "page")
-                    if(value.class != Integer)
-                        puts "book info is wrong"
-                        status 400
-                        return
-                    end
-                elsif(key == "id" || key == "title" || key == "publishedDate" || key == "publisher" || key == "description")
-                    if(value.class != String)
-                        puts "book info is wrong"
-                        status 400
-                        return
-                    end
-                else
-                    status 400
-                    return    
-                end
-            }
+        book = params[1]
+        review = params[2] 
+        if book.size != 7
+            puts "book info is wrong"
+            status 400
+            return 
+        end
+        if review.size != 5
+            puts "review info is wrong"
+            status 400
+            return 
+        end
 
-            review.each{|key,value|
-                if (key == "rating")
-                    if (value.class != Integer)
-                        puts "review info is wrong"
-                        status 400
-                        return
-                    end
-                elsif (key == "wanna" || key == "recommend")
-                    if(!(value.class == TrueClass || value.class == FalseClass))
-                        puts "review info is wrong"
-                        status 400
-                        return
-                    end
-                elsif (key == "username" || key == "comment")
-                    if(value.class != String)
-                        puts "review info is wrong"
-                        status 400
-                        return
-                    end
-                else
+        book.each{|key,value|
+            if (key == "author")
+                if (value.class != Array)
+                    puts "book info is wrong"
                     status 400
                     return
                 end
-            }
-            if !$lib.IsBook(book["id"])
-                if $lib.Register(book["id"], book["title"], book["author"], book["page"], book["publishedDate"], book["publisher"], book["description"]) == false
+            elsif (key == "page")
+                if(value.class != Integer)
+                    puts "book info is wrong"
                     status 400
                     return
                 end
-            end
-            wanna = review["wanna"] ? 1 : 0
-            recommend = review["recommend"] ? 1 : 0
-            if $review.Add(book["id"], review["username"], review["rating"], review["comment"], wanna, recommend) == false
-                status 400
-                return
-            end
-        elsif (type["type"] == "change")
-            if(params.size != 2)    
-                status 400
-                return 
-            end
-            review = params[1]
-            review.each{|key,value|
-                if (key == "rating")
-                    if (value.class != Integer)
-                        puts "review info is wrong"
-                        status 400
-                        return
-                    end
-                elsif (key == "wanna" || key == "recommend")
-                    if(!(value.class == TrueClass || value.class == FalseClass))
-                        puts "review info is wrong"
-                        status 400
-                        return
-                    end
-                elsif (key == "id" || key == "comment")
-                    if(value.class != String)
-                        puts "review info is wrong"
-                        status 400
-                        return
-                    end
-                else
+            elsif(key == "id" || key == "title" || key == "publishedDate" || key == "publisher" || key == "description")
+                if(value.class != String)
+                    puts "book info is wrong"
                     status 400
                     return
                 end
-            }
-            wanna = review["wanna"] ? 1 : 0
-            recommend = review["recommend"] ? 1 : 0
-            if $review.Change(review["id"], review["rating"], review["comment"], wanna, recommend) == false
+            else
                 status 400
-                return
+                return    
             end
+        }
 
-        elsif (type["type"] == "delete")
-            if(params.size != 2)    
-                status 400
-                return 
-            end
-            id = params[1]["id"]
-            if(id.class != String)
-                puts "review info is wrong"
+        review.each{|key,value|
+            if (key == "rating")
+                if (value.class != Integer)
+                    puts "review info is wrong"
+                    status 400
+                    return
+                end
+            elsif (key == "wanna" || key == "recommend")
+                if(!(value.class == TrueClass || value.class == FalseClass))
+                    puts "review info is wrong"
+                    status 400
+                    return
+                end
+            elsif (key == "username" || key == "comment")
+                if(value.class != String)
+                    puts "review info is wrong"
+                    status 400
+                    return
+                end
+            else
                 status 400
                 return
             end
-            if $review.Delete(id) == false
+        }
+        if !$lib.IsBook(book["id"])
+            if $lib.Register(book["id"], book["title"], book["author"], book["page"], book["publishedDate"], book["publisher"], book["description"]) == false
                 status 400
                 return
             end
-        else
+        end
+        wanna = review["wanna"] ? 1 : 0
+        recommend = review["recommend"] ? 1 : 0
+        if $review.Add(book["id"], review["username"], review["rating"], review["comment"], wanna, recommend) == false
+            status 400
+            return
+        end
+    elsif (type["type"] == "change")
+        if(params.size != 2)    
+            status 400
+            return 
+        end
+        if review.size != 5
+            puts "review info is wrong"
+            status 400
+            return 
+        end
+        review = params[1]
+        review.each{|key,value|
+            if (key == "rating")
+                if (value.class != Integer)
+                    puts "review info is wrong"
+                    status 400
+                    return
+                end
+            elsif (key == "wanna" || key == "recommend")
+                if(!(value.class == TrueClass || value.class == FalseClass))
+                    puts "review info is wrong"
+                    status 400
+                    return
+                end
+            elsif (key == "id" || key == "comment")
+                if(value.class != String)
+                    puts "review info is wrong"
+                    status 400
+                    return
+                end
+            else
+                status 400
+                return
+            end
+        }
+        wanna = review["wanna"] ? 1 : 0
+        recommend = review["recommend"] ? 1 : 0
+        if $review.Change(review["id"], review["rating"], review["comment"], wanna, recommend) == false
             status 400
             return
         end
 
-        status 200
-    rescue => exception
-        puts exception
+    elsif (type["type"] == "delete")
+        if(params.size != 2)    
+            status 400
+            return 
+        end
+        if params[1].size != 1
+            puts "review info is wrong"
+            status 400
+            return 
+        end
+        id = params[1]["id"]
+        if(id.class != String)
+            puts "review info is wrong"
+            status 400
+            return
+        end
+        if $review.Delete(id) == false
+            status 400
+            return
+        end
+    else
         status 400
+        return
     end
+
+    status 200
 end
 get '/success' do
     erb :success
@@ -255,8 +247,13 @@ end
 
 
 get '/logout' do
-    session.clear
-    erb :logout
+    if(session[:login_flag] == true)
+        session.clear
+        erb :logout
+    else
+        sessoin.clear
+        erb :fail
+    end
 end
 
 get '/fail'do
@@ -283,6 +280,7 @@ post '/delete' ,provides: :json do
     status 400
     return 
 end
+
 get '/mypage' do
     if(session[:login_flag] == true)
         @name = session[:name]
@@ -308,7 +306,7 @@ get '/mypage' do
         @recommendBook = @recommendBook.slice(0,10)
         erb :contents
     else
-        erb :badrequest
+        erb :fail
     end
 end
 
@@ -339,6 +337,6 @@ get '/book/:id' do
         end
         erb :bookdetail
     else
-        erb :badrequest
+        erb :fail
     end
 end

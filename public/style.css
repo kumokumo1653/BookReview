@@ -3,7 +3,7 @@ button{
     font-weight: bold;
     padding: 10px 20px;
     margin: 5px;
-    background-color: #224488;
+    background: #224488;
     color: #ffffff;
     border-radius: 5px;
     border-style: none;
@@ -36,7 +36,6 @@ center{
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
-    margin: auto;
 }
 
 .message p{
