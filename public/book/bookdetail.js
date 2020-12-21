@@ -146,6 +146,7 @@ function transmission(obj){
         request.send(JSON.stringify(param));
         request.onload = () => {
             if(request.status == 200){
+                
                 console.log("responce");
                 location.reload();
             }else{

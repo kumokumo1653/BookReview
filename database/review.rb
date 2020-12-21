@@ -88,8 +88,6 @@ class Reviewer
                 return false
             end
             if(recommend != 1 && recommend != 0)
-                s.recommend = recommend
-            else
                 return false
             end
             if(rating == 0)
