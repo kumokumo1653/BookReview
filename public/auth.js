@@ -21,7 +21,7 @@ function send(obj){
                 if(pop){
                     //popup
                     pop.classList.add('is-show');
-                    let background = document.getElementById("popupBack");
+                    let background = document.getElementById("popupLoginBack");
                     let closeButton = document.getElementById("loginCloseButton");
                     if(background){
                         background.addEventListener('click', () => {
@@ -37,18 +37,6 @@ function send(obj){
             }
         };
     }else if(obj.name == "register"){
-        let [name, pass] = (() => {
-            let parent = obj.parentNode;
-            let cnt = parent.childElementCount;
-            temp = ["",""]
-            for(let i = 0; i < cnt; i++){
-                if(parent.children[i].name == "name")
-                    temp[0] = parent.children[i].value;
-                if(parent.children[i].name == "pass")
-                    temp[1] = parent.children[i].value;
-            }
-            return temp;
-        })();
         params.push({"type" : "register"});
         params.push({
             "name" : document.getElementById("registerName").value,
@@ -66,7 +54,7 @@ function send(obj){
                 if(pop){
                     //popup
                     pop.classList.add('is-show');
-                    let background = document.getElementById("popupBack");
+                    let background = document.getElementById("popupRegisterBack");
                     let closeButton = document.getElementById("registerCloseButton");
                     if(background){
                         background.addEventListener('click', () => {
