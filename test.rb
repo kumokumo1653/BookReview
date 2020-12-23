@@ -6,12 +6,12 @@ pass = User.new
 lib = Library.new
 review = Reviewer.new
 
-pass.GenAccount("singen","yamai-yamai",1)
+pass.genaccount("singen","yamai-yamai",1)
 puts ""
-pass.CheckAccount("singen","yamai-yamai")
+pass.checkaccount("singen","yamai-yamai")
 puts ""
 
-pass.GenAccount("nobunaga","achichi-achihi",1)
+pass.genaccount("nobunaga","achichi-achihi",1)
 puts ""
 pass.CheckAccount("nobunaga","achichi-achihi")
 puts ""

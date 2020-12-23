@@ -3,7 +3,7 @@ ActiveRecord::Base.configurations = YAML.load_file('./database/database.yml')
 ActiveRecord::Base.establish_connection :development
 
 ID = 15
-TITLE = 30
+TITLE = 50
 AUTHOR = 30
 PUBLISHER = 20
 PUBLISHEDDATE = 15

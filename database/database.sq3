@@ -7,7 +7,7 @@ create table accounts(
 
 create table books(
     id char(15) primary key,
-    title varchar(30) not null,
+    title varchar(50) not null,
     author varchar(30),
     page integer,
     publisher varchar(20),
