@@ -46,15 +46,9 @@
                             <th class="wannaread">読みたい</th>
                         </tr>
                         <tr>
-                            <%if @book == []%>
-                                <td id="rating">-</td>
-                                <td id="recommend">-</td>
-                                <td id="wannaread">-</td>
-                            <%else%>
-                                <td id="rating"><%=@book.rating%></td>
-                                <td id="recommend"><%=@book.recommendnumber%></td>
-                                <td id="wannaread"><%= @book.wannanumber %></td>
-                            <%end%>
+                            <td id="rating">-</td>
+                            <td id="recommend">-</td>
+                            <td id="wannaread">-</td>
                         </tr>
                     </table>
 
@@ -105,19 +99,13 @@
                             <th class="wannaread">読みたい</th>
                         </tr>
                         <tr>
-                            <%if @book == []%>
+                            <%if @book.rating == 0%>
                                 <td id="rating">-</td>
-                                <td id="recommend">-</td>
-                                <td id="wannaread">-</td>
                             <%else%>
-                                <%if @book.rating == 0%>
-                                    <td id="rating">-</td>
-                                <%else%>
-                                    <td id="rating"><%=@book.rating%></td>
-                                <%end%>
-                                <td id="recommend"><%=@book.recommendnumber%></td>
-                                <td id="wannaread"><%= @book.wannanumber %></td>
+                                <td id="rating"><%=@book.rating%></td>
                             <%end%>
+                            <td id="recommend"><%=@book.recommendnumber%></td>
+                            <td id="wannaread"><%= @book.wannanumber %></td>
                         </tr>
                     </table>
 

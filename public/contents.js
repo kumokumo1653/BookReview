@@ -9,9 +9,6 @@ function search(){
     xhr.send(null);
 }
 
-function cancel(){
-    document.getElementById("result").innerHTML = "";
-}
 function checkStatus(){
     s = "";
     if(xhr.readyState == 4){
@@ -68,6 +65,10 @@ function checkStatus(){
     }
 }
 
+
+function cancel(){
+    document.getElementById("result").innerHTML = "";
+}
 
 function popup(){
 
