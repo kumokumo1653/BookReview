@@ -109,7 +109,6 @@ function transmission(obj){
             "description" : document.getElementById("description").innerHTML,
         };
     }
-    let comment = form.elements['comment'].value;//.replace(/[\n|\r|\r\n|　 |\t]/g,'');
     //追加
     if (obj.innerHTML == "送信"){
         param.push({"type" : "add"});
@@ -119,7 +118,7 @@ function transmission(obj){
             "recommend" : form.elements['recommend'].checked,
             "wanna" : form.elements['wanna'].checked,
             "rating" : rating,
-            "comment" : comment,
+            "comment" : form.elements['comment'].value
         });
         request.open("POST", "http://127.0.0.1:9998/review");
         request.setRequestHeader("Content-Type", "application/json");
@@ -139,7 +138,7 @@ function transmission(obj){
             "recommend" : form.elements['recommend'].checked,
             "wanna" : form.elements['wanna'].checked,
             "rating" : rating,
-            "comment" : comment,
+            "comment" : form.elements['comment'].value,
         });
         request.open("POST", "http://127.0.0.1:9998/review");
         request.setRequestHeader("Content-Type", "application/json");
