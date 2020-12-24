@@ -192,9 +192,9 @@
         </form>
 
         <%if @reviews.empty? %>
-        <p>レビューはありません。</p>
+        <p>コメントはありません。</p>
         <%else %>
-            <p>レビュー一覧</p>
+            <p>コメント一覧</p>
             <%for a in @reviews%>
                 <table class="comment">
                     <tr>
@@ -211,8 +211,12 @@
 
         <div class="popup" id="limitPop">
             <div class="popupInner">
-                <p>インターネット接続を確認してください</p>
-                <p>アクセス回数がGoogleBooksAPIの制限に抵触しました．少し待ってからもう一度お試しください．</p>
+                <p>情報取得時にエラーが発生しました．次の原因が考えられます．</p>
+                <ul>
+                    <li>インターネット接続がされていない</li>
+                    <li>Google Books APIの制限に抵触している．</li>
+                </ul>
+                <p>インターネット接続が確認されてもエラーが出る場合は少し待ってからもう一度試してください．</p>
                 <button type="button" id="limitButton" onclick="location.href='http://127.0.0.1:9998/mypage'">マイページに戻る</button>
             </div>
             <div class="background" id="popupBack"></div>
