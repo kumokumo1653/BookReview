@@ -177,12 +177,12 @@ post '/review' , provides: :json do
             status 400
             return 
         end
+        review = params[1]
         if review.size != 5
             puts "review info is wrong"
             status 400
             return 
         end
-        review = params[1]
         review.each{|key,value|
             if (key == "rating")
                 if (value.class != Integer)
@@ -337,6 +337,6 @@ get '/book/:id' do
         end
         erb :bookdetail
     else
-        erb :fail
+        redirect '/fail'
     end
 end
