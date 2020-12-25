@@ -29,8 +29,8 @@ class Library
     def Register(id, title, author, page, publishedDate, publisher, description)
         temp = ""
         begin
+            len = 0
             author.each_with_index do |num, index|
-                len = 0
                 if(index == author.size - 1)
                     len += num.length
                     if(len > AUTHOR)
